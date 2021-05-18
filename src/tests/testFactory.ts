@@ -1,3 +1,4 @@
+import AuthenticationTest from './authenticationTest';
 import ConnectionTest from './connectionTest';
 import Test from './test';
 
@@ -12,6 +13,10 @@ class TestFactory {
                 test = new ConnectionTest();
                 break;
         
+            case 'authentication':
+                test = new AuthenticationTest();
+                break;
+
             default:
                 break;
         }
