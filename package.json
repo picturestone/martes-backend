@@ -20,10 +20,13 @@
   },
   "homepage": "https://github.com/picturestone/martes-backend#readme",
   "dependencies": {
+    "bufferutil": "^4.0.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "helmet": "^4.6.0"
+    "helmet": "^4.6.0",
+    "mqtt": "^4.2.6",
+    "utf-8-validate": "^5.0.5"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",

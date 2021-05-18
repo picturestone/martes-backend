@@ -1,10 +1,15 @@
 /**
  * Required External Modules
  */
- import * as dotenv from "dotenv";
- import express from "express";
- import cors from "cors";
- import helmet from "helmet";
+ import * as dotenv from 'dotenv';
+ import express from 'express';
+ import cors from 'cors';
+ import helmet from 'helmet';
+
+ /**
+  * Import routes
+  */
+ import indexRouter from './routes/index';
  
  dotenv.config();
 
@@ -25,6 +30,11 @@
  app.use(helmet());
  app.use(cors());
  app.use(express.json());
+
+ /**
+  * Routes
+  */
+ app.use('/', indexRouter);
 
 /**
  * Server Activation
