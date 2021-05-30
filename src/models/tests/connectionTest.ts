@@ -1,7 +1,17 @@
 import Test from "./test";
 import mqtt, { Client } from 'mqtt';
 
-class ConnectionTest implements Test {
+class ConnectionTest extends Test {
+    public static readonly type: string = 'connection';
+
+    private constructor() {
+        super();
+    }
+
+    public static getInstance(): ConnectionTest {
+        return new ConnectionTest();
+    }
+    
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         var isServerRunning: boolean = false;
 

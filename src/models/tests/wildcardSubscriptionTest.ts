@@ -2,7 +2,17 @@ import Test from "./test";
 import mqtt, { Client } from 'mqtt';
 import crypto from 'crypto';
 
-class WildcardSubscriptionTest implements Test {
+class WildcardSubscriptionTest extends Test {
+    public static readonly type: string = 'wildcardSubscription';
+
+    private constructor() {
+        super();
+    }
+
+    public static getInstance(): WildcardSubscriptionTest {
+        return new WildcardSubscriptionTest();
+    }
+    
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         var isWildcardSubscriptionSuccessful: boolean = false;
         const uuid: string = crypto.randomBytes(16).toString('base64');

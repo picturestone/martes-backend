@@ -1,7 +1,17 @@
 import Test from "./test";
 import mqtt, { Client } from 'mqtt';
 
-class ConnectTest implements Test {
+class AuthorizationTest extends Test {
+    public static readonly type: string = 'authorization';
+
+    private constructor() {
+        super();
+    }
+
+    public static getInstance(): AuthorizationTest {
+        return new AuthorizationTest();
+    }
+
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         const client: Client = mqtt.connect(null, {
             host: '192.168.1.50',
@@ -19,4 +29,4 @@ class ConnectTest implements Test {
     }
 }
 
-export default ConnectTest;
+export default AuthorizationTest;

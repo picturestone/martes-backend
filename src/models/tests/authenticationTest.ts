@@ -1,7 +1,17 @@
 import Test from "./test";
 import mqtt, { Client } from 'mqtt';
 
-class AuthenticationTest implements Test {
+class AuthenticationTest extends Test {
+    public static readonly type: string = 'authentication';
+
+    private constructor() {
+        super();
+    }
+
+    public static getInstance(): AuthenticationTest {
+        return new AuthenticationTest();
+    }
+
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         var isUnauthenticatedConnection: boolean = false;
 

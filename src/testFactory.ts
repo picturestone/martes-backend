@@ -6,20 +6,23 @@ import WildcardSubscriptionTest from './models/tests/wildcardSubscriptionTest';
 class TestFactory {
     private static _instance: TestFactory;
 
+    private constructor() {
+    }
+
     public getTest(name: String): Test {
         var test: Test | null = null;
 
         switch (name) {
-            case 'connection':
-                test = new ConnectionTest();
+            case ConnectionTest.type:
+                test = ConnectionTest.getInstance();
                 break;
         
-            case 'authentication':
-                test = new AuthenticationTest();
+            case AuthenticationTest.type:
+                test = AuthenticationTest.getInstance();
                 break;
             
-            case 'wildcardSubscription':
-                test = new WildcardSubscriptionTest();
+            case WildcardSubscriptionTest.type:
+                test = WildcardSubscriptionTest.getInstance();
                 break;
 
             default:
@@ -34,7 +37,11 @@ class TestFactory {
     }
 
     public getTestNames(): String[] {
-        return ['connection'];
+        return [
+            ConnectionTest.type,
+            AuthenticationTest.type,
+            WildcardSubscriptionTest.type
+        ];
     }
 
     public static getInstance(): TestFactory {
