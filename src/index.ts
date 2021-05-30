@@ -10,7 +10,7 @@
   * Import routes
   */
  import indexRouter from './routes/index';
- import testsuitesRouter from './routes/testsuites';
+ import testsuitesRouter from './routes/testSuites';
  
  dotenv.config();
 
