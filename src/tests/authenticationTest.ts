@@ -13,8 +13,9 @@ class AuthenticationTest implements Test {
 
         unauthenticatedClient.on('connect', () => {
             // Connecting without credentials is possible, so the test must be failed.
-            unauthenticatedClient.end(true);
             isUnauthenticatedConnection = true;
+            // Close connection.
+            unauthenticatedClient.end(true);
             callback(false, 'Connection is unauthenticated');
         });
 
@@ -25,8 +26,8 @@ class AuthenticationTest implements Test {
                     host: '192.168.1.50',
                     port: 1883,
                     reconnectPeriod: 0,
-                    username: 'user',
-                    password: 'lp9rjDLn540PjDdU'
+                    username: 'martes',
+                    password: 'martes'
                 });
         
                 authenticatedClient.on('error', (error) => {

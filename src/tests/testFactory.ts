@@ -1,6 +1,7 @@
 import AuthenticationTest from './authenticationTest';
 import ConnectionTest from './connectionTest';
 import Test from './test';
+import WildcardSubscriptionTest from './wildcardSubscriptionTest';
 
 class TestFactory {
     private static _instance: TestFactory;
@@ -15,6 +16,10 @@ class TestFactory {
         
             case 'authentication':
                 test = new AuthenticationTest();
+                break;
+            
+            case 'wildcardSubscription':
+                test = new WildcardSubscriptionTest();
                 break;
 
             default:
