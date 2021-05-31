@@ -9,12 +9,12 @@ class TestFactory {
     private constructor() {
     }
 
-    public getTest(name: String): Test {
+    public getTest(type: String, params: {[key: string]: string|number}): Test {
         var test: Test | null = null;
 
-        switch (name) {
+        switch (type) {
             case ConnectionTest.type:
-                test = ConnectionTest.getInstance();
+                test = ConnectionTest.getInstance(params);
                 break;
         
             case AuthenticationTest.type:
@@ -30,13 +30,13 @@ class TestFactory {
         }
 
         if (!test) {
-            throw new Error('Test with name \'' + name +'\' not found.');
+            throw new Error('Test with type \'' + type +'\' not found.');
         }
 
         return test;
     }
 
-    public getTestNames(): String[] {
+    public getTestTypes(): String[] {
         return [
             ConnectionTest.type,
             AuthenticationTest.type,

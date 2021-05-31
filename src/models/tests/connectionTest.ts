@@ -4,20 +4,42 @@ import mqtt, { Client } from 'mqtt';
 class ConnectionTest extends Test {
     public static readonly type: string = 'connection';
 
-    private constructor() {
+    private host: string;
+    private port: number;
+
+    private constructor(host: string, port: number) {
         super();
+        this.host = host;
+        this.port = port;
     }
 
-    public static getInstance(): ConnectionTest {
-        return new ConnectionTest();
+    public static getInstance(params: any): ConnectionTest {
+        const host: string = params.host;
+        const port: number = params.port;
+        if(!host || !port) {
+            throw new Error('Missing parameters to create test of type ' + this.type);
+        }
+
+        return new ConnectionTest(host, port);
+    }
+
+    public get params(): {} {
+        return {
+            host: this.host,
+            port: this.port
+        }
+    }
+
+    public get type(): string {
+        return ConnectionTest.type;
     }
     
-    execute(callback: (isSuccessful: boolean, message?: string) => any): void {
+    public execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         var isServerRunning: boolean = false;
 
         const client: Client = mqtt.connect(null, {
-            host: '192.168.1.50',
-            port: 1884,
+            host: this.host,
+            port: this.port,
             reconnectPeriod: 0,
             connectTimeout: 10 * 1000
         });

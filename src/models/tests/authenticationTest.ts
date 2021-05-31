@@ -12,6 +12,14 @@ class AuthenticationTest extends Test {
         return new AuthenticationTest();
     }
 
+    public get params(): {} {
+        throw new Error("Method not implemented.");
+    }
+
+    public get type(): string {
+        return AuthenticationTest.type;
+    }
+
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         var isUnauthenticatedConnection: boolean = false;
 

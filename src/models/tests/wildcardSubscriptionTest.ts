@@ -12,6 +12,14 @@ class WildcardSubscriptionTest extends Test {
     public static getInstance(): WildcardSubscriptionTest {
         return new WildcardSubscriptionTest();
     }
+
+    public get params(): {} {
+        throw new Error("Method not implemented.");
+    }
+
+    public get type(): string {
+        return WildcardSubscriptionTest.type;
+    }
     
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         var isWildcardSubscriptionSuccessful: boolean = false;

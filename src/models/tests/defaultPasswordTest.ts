@@ -11,6 +11,14 @@ class DefaultPasswordTest extends Test {
     public static getInstance(): DefaultPasswordTest {
         return new DefaultPasswordTest();
     }
+
+    public get params(): {} {
+        throw new Error("Method not implemented.");
+    }
+
+    public get type(): string {
+        return DefaultPasswordTest.type;
+    }
     
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         const client: Client = mqtt.connect(null, {

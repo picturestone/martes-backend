@@ -11,6 +11,14 @@ class DataEncryptionTest extends Test {
     public static getInstance(): DataEncryptionTest {
         return new DataEncryptionTest();
     }
+
+    public get params(): {} {
+        throw new Error("Method not implemented.");
+    }
+
+    public get type(): string {
+        return DataEncryptionTest.type;
+    }
     
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         const client: Client = mqtt.connect(null, {

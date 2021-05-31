@@ -12,6 +12,14 @@ class AuthorizationTest extends Test {
         return new AuthorizationTest();
     }
 
+    public get params(): {} {
+        throw new Error("Method not implemented.");
+    }
+
+    public get type(): string {
+        return AuthorizationTest.type;
+    }
+
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         const client: Client = mqtt.connect(null, {
             host: '192.168.1.50',
