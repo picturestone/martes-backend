@@ -1,28 +1,32 @@
 import express, { Router } from 'express';
+import TestSuiteFacade from '../database/testSuiteFacade';
 import Test from '../models/tests/test';
+import TestSuite from '../models/testSuite';
 import TestFactory from '../testFactory';
 
 const router: Router = express.Router();
 
-router.get('/', (req, res) => {
-    // var test: Test;
+router.post('/', (req, res) => {
+    const testFactory: TestFactory = TestFactory.getInstance();
+    const testSuite: TestSuite = new TestSuite(req.body.name);
 
-    // try {
-    //     test = TestFactory.getInstance().getTest('connection');
+    try {
+        req.body.tests.forEach((testData: { type: String; params: { [key: string]: string | number; }; }) => {
+            const test: Test = testFactory.getTest(testData.type, testData.params);
+            testSuite.tests.push(test);
+        });
+    } catch (error) {
+        res.status(400).send(error.message);
+        return;
+    }
 
-    //     test.execute((isSuccessful, message) => {
-    //         if (isSuccessful) {
-    //             res.sendStatus(200);
-    //         } else {
-    //             res.send({'Error': message});
-    //             res.status(400);
-    //         }
-    //     });
-    // } catch (error) {
-    //     console.log(error);
-    //     res.json({'Error': error.message});
-    //     res.status(400);
-    // }
+    (new TestSuiteFacade()).save(testSuite, (err: Error | null, identifier: number) => {
+        if (err) {
+            res.status(500).send(err.message);
+        } else {
+            res.status(200).send(identifier);
+        }
+    });
 });
 
 export default router;
