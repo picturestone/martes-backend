@@ -1,7 +1,7 @@
-import AuthenticationTest from './models/tests/authenticationTest';
-import ConnectionTest from './models/tests/connectionTest';
-import Test from './models/tests/test';
-import WildcardSubscriptionTest from './models/tests/wildcardSubscriptionTest';
+import AuthenticationTest from './models/schemes/authenticationTest';
+import ConnectionTest from './models/schemes/connectionTest';
+import Test from './models/schemes/testScheme';
+import WildcardSubscriptionTest from './models/schemes/wildcardSubscriptionTest';
 
 class TestFactory {
     private static _instance: TestFactory;

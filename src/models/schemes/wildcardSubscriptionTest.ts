@@ -1,8 +1,8 @@
-import Test from "./test";
+import TestScheme from './testScheme';
 import mqtt, { Client } from 'mqtt';
 import crypto from 'crypto';
 
-class WildcardSubscriptionTest extends Test {
+class WildcardSubscriptionTest extends TestScheme {
     public static readonly type: string = 'wildcardSubscription';
 
     private constructor(id?: number) {

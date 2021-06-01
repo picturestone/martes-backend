@@ -10,18 +10,18 @@ class DatabaseWrapper {
         fs.openSync(this.dbPath, 'w');
 
         const createTestSuites = `
-            CREATE TABLE testsuites (
+            CREATE TABLE testsuiteschemes (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL UNIQUE
             );
         `;
         const createTests = `
-            CREATE TABLE tests (
+            CREATE TABLE testschemes (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                testsuitesId INTEGER,
+                testsuiteschemeId INTEGER,
                 testType TEXT NOT NULL,
                 params TEXT NOT NULL,
-                FOREIGN KEY(testsuitesId) REFERENCES testsuites(id)
+                FOREIGN KEY(testsuiteschemeId) REFERENCES testsuiteschemes(id)
             );
         `;
         const db: Database = this.getDatabase();

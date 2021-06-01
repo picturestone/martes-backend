@@ -10,7 +10,7 @@
   * Import routes
   */
  import indexRouter from './routes/index';
- import testsuitesRouter from './routes/testSuites';
+ import testSuiteSchemesRouter from './routes/testSuiteSchemes';
  
  dotenv.config();
 
@@ -36,7 +36,7 @@
   * Routes
   */
  app.use('/', indexRouter);
- app.use('/testsuites', testsuitesRouter);
+ app.use('/testsuiteschemes', testSuiteSchemesRouter);
 
 /**
  * Server Activation

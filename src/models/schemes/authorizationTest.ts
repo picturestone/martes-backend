@@ -1,7 +1,7 @@
-import Test from "./test";
+import TestScheme from './testScheme';
 import mqtt, { Client } from 'mqtt';
 
-class AuthorizationTest extends Test {
+class AuthorizationTest extends TestScheme {
     public static readonly type: string = 'authorization';
 
     private constructor(id?: number) {

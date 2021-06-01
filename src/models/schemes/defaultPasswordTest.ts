@@ -1,7 +1,7 @@
-import Test from "./test";
+import TestScheme from './testScheme';
 import mqtt, { Client } from 'mqtt';
 
-class DefaultPasswordTest extends Test {
+class DefaultPasswordTest extends TestScheme {
     public static readonly type: string = 'defaultPassword';
 
     private constructor(id?: number) {

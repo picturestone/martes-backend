@@ -1,7 +1,7 @@
-import Test from "./test";
+import TestScheme from './testScheme';
 import mqtt, { Client } from 'mqtt';
 
-class DataEncryptionTest extends Test {
+class DataEncryptionTest extends TestScheme {
     public static readonly type: string = 'dataEncryption';
 
     private constructor(id?: number) {

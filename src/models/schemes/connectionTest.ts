@@ -1,7 +1,7 @@
-import Test from "./test";
+import TestScheme from './testScheme';
 import mqtt, { Client } from 'mqtt';
 
-class ConnectionTest extends Test {
+class ConnectionTest extends TestScheme {
     public static readonly type: string = 'connection';
 
     private host: string;

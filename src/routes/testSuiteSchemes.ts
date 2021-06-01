@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
-import TestSuiteFacade from '../database/testSuiteFacade';
-import Test from '../models/tests/test';
-import TestSuite from '../models/testSuite';
+import TestSuiteSchemeFacade from '../database/testSuiteSchemeFacade';
+import TestScheme from '../models/schemes/testScheme';
+import TestSuiteScheme from '../models/schemes/testSuiteScheme';
 import TestFactory from '../testFactory';
 
 const router: Router = express.Router();
@@ -12,32 +12,32 @@ router.get('/:id', (req, res) => {
         res.status(400).send('Id must be a number');
         return;
     }
-    (new TestSuiteFacade()).getById(id, (err: Error | null, testSuite: TestSuite | null) => {
+    (new TestSuiteSchemeFacade()).getById(id, (err: Error | null, testSuiteScheme: TestSuiteScheme | null) => {
         if (err) {
             res.status(500).send(err.message);
-        } else if (testSuite === null) {
+        } else if (testSuiteScheme === null) {
             res.sendStatus(404);
         } else {
-            res.json(testSuite);
+            res.json(testSuiteScheme);
         }
     });
 });
 
 router.post('/', (req, res) => {
     const testFactory: TestFactory = TestFactory.getInstance();
-    const testSuite: TestSuite = new TestSuite(req.body.name);
+    const testSuiteScheme: TestSuiteScheme = new TestSuiteScheme(req.body.name);
 
     try {
         req.body.tests.forEach((testData: { type: String; params: { [key: string]: string | number; }; }) => {
-            const test: Test = testFactory.getTest(testData.type, testData.params);
-            testSuite.tests.push(test);
+            const testScheme: TestScheme = testFactory.getTest(testData.type, testData.params);
+            testSuiteScheme.testSchemes.push(testScheme);
         });
     } catch (error) {
         res.status(400).send(error.message);
         return;
     }
 
-    (new TestSuiteFacade()).save(testSuite, (err: Error | null, identifier: number) => {
+    (new TestSuiteSchemeFacade()).save(testSuiteScheme, (err: Error | null, identifier: number) => {
         if (err) {
             res.status(500).send(err.message);
         } else {
