@@ -1,7 +1,25 @@
 import Test from "./test";
 import mqtt, { Client } from 'mqtt';
 
-class AuthenticationTest implements Test {
+class AuthenticationTest extends Test {
+    public static readonly type: string = 'authentication';
+
+    private constructor(id?: number) {
+        super(id);
+    }
+
+    public static getInstance(id?: number): AuthenticationTest {
+        return new AuthenticationTest(id);
+    }
+
+    public get params(): {} {
+        throw new Error("Method not implemented.");
+    }
+
+    public get type(): string {
+        return AuthenticationTest.type;
+    }
+
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         var isUnauthenticatedConnection: boolean = false;
 
@@ -13,8 +31,9 @@ class AuthenticationTest implements Test {
 
         unauthenticatedClient.on('connect', () => {
             // Connecting without credentials is possible, so the test must be failed.
-            unauthenticatedClient.end(true);
             isUnauthenticatedConnection = true;
+            // Close connection.
+            unauthenticatedClient.end(true);
             callback(false, 'Connection is unauthenticated');
         });
 
@@ -25,8 +44,8 @@ class AuthenticationTest implements Test {
                     host: '192.168.1.50',
                     port: 1883,
                     reconnectPeriod: 0,
-                    username: 'user',
-                    password: 'lp9rjDLn540PjDdU'
+                    username: 'martes',
+                    password: 'martes'
                 });
         
                 authenticatedClient.on('error', (error) => {
