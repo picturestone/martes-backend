@@ -3,11 +3,13 @@ import DatabaseWrapper from './databaseWrapper';
 import TestScheme from '../models/schemes/testScheme';
 import TestSuiteScheme from "../models/schemes/testSuiteScheme";
 import TestFactory from '../testFactory';
+import TestSuite from '../models/executable/testSuite';
+import Executable from '../models/executable/executable';
 
-class TestSuiteSchemeFacade {
-    public getById(id: number, callback: (err: Error | null, testSuiteScheme: TestSuiteScheme | null) => void) {
+class TestSuiteFacade {
+    public getById(id: number, callback: (err: Error | null, testSuite: TestSuite | null) => void) {
         DatabaseWrapper.getDatabase().then((db: Database) => {
-            const sql = `SELECT * FROM testsuiteschemes as tss LEFT JOIN testschemes as ts ON tss.id = ts.testsuiteschemeId WHERE tss.id = ?`;
+            const sql = `SELECT * FROM testsuites as ts LEFT JOIN tests as t ON ts.id = t.testsuiteId WHERE ts.id = ?`;
             db.all(sql, [id], (err: Error, rows: any[]) => {
                 if (err) {
                     callback(err, null);
@@ -15,21 +17,22 @@ class TestSuiteSchemeFacade {
                     if (rows.length === 0) {
                         callback(null, null);
                     } else {
-                        const testSuiteScheme = new TestSuiteScheme(rows[0].name, rows[0].testsuiteschemeId);
-                        const testSchemes: TestScheme[] = [];
+                        const testSuite = new TestSuite(rows[0].name, rows[0].testsuiteschemeId);
+                        const tests: Executable[] = [];
                         const testFactory: TestFactory = TestFactory.getInstance();
                         rows.forEach((row) => {
-                            testSchemes.push(testFactory.getTestScheme(row.testType, JSON.parse(row.params), row.id));
+                            tests.push(testFactory.getTestScheme(row.testType, JSON.parse(row.params), row.id).getExecutableInstance());
                         });
-                        testSuiteScheme.testSchemes = testSchemes;
-                        callback(null, testSuiteScheme);
+                        testSuite.tests = tests;
+                        callback(null, testSuite);
                     }
                 }
             });
         });
     }
 
-    public save(testSuiteScheme: TestSuiteScheme, callback: (err: Error | null, identifier: number) => void) {
+    // TODO fix
+    public save(testSuite: TestSuite, callback: (err: Error | null, identifier: number) => void) {
         DatabaseWrapper.getDatabase().then((db: Database) => {
             const handleError = (err: Error) => {
                 db.run('ROLLBACK');
@@ -40,8 +43,8 @@ class TestSuiteSchemeFacade {
             // need the id of the testsuite as a foregin key.
             db.run('BEGIN');
             // Insert the testsuite.
-            let sql = `INSERT INTO testsuiteschemes(name) VALUES(?)`;
-            db.run(sql, [testSuiteScheme.name], function (this: RunResult, err: Error) {
+            let sql = `INSERT INTO testsuites(name) VALUES(?)`;
+            db.run(sql, [testSuite.name], function (this: RunResult, err: Error) {
                 if (err) {
                     return handleError(err);
                 } else {
@@ -70,4 +73,4 @@ class TestSuiteSchemeFacade {
     }
 }
 
-export default TestSuiteSchemeFacade;
+export default TestSuiteFacade;

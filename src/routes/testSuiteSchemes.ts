@@ -29,7 +29,7 @@ router.post('/', (req, res) => {
 
     try {
         req.body.tests.forEach((testData: { type: String; params: { [key: string]: string | number; }; }) => {
-            const testScheme: TestScheme = testFactory.getTest(testData.type, testData.params);
+            const testScheme: TestScheme = testFactory.getTestScheme(testData.type, testData.params);
             testSuiteScheme.testSchemes.push(testScheme);
         });
     } catch (error) {

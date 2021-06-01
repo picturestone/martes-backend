@@ -1,3 +1,5 @@
+import TestScheme from "../schemes/testScheme";
+import TestSuiteScheme from "../schemes/testSuiteScheme";
 import Executable from "./executable";
 
 class TestSuite {
@@ -5,10 +7,12 @@ class TestSuite {
     public tests: Executable[];
     public id?: number;
 
-    constructor(name: string, id?: number) {
-        this.name = name;
-        this.id = id;
+    constructor(testSuiteScheme: TestSuiteScheme, id?: number) {
+        this.name = testSuiteScheme.name;
         this.tests = [];
+        testSuiteScheme.testSchemes.forEach((testScheme: TestScheme) => {
+            this.tests.push(testScheme.getExecutableInstance());
+        });
     }
 
     public execute() {

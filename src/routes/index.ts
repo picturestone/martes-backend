@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
     // var test: Test;
 
     // try {
-    //     test = TestFactory.getInstance().getTest('connection');
+    //     test = TestFactory.getInstance().getTestScheme('connection');
 
     //     test.execute((isSuccessful, message) => {
     //         if (isSuccessful) {

@@ -1,6 +1,6 @@
 import AuthenticationTestScheme from './models/schemes/authenticationTestScheme';
 import ConnectionTestScheme from './models/schemes/connectionTestScheme';
-import Test from './models/schemes/testScheme';
+import TestScheme from './models/schemes/testScheme';
 import WildcardSubscriptionTestScheme from './models/schemes/wildcardSubscriptionTestScheme';
 
 class TestFactory {
@@ -9,8 +9,8 @@ class TestFactory {
     private constructor() {
     }
 
-    public getTest(type: String, params: {[key: string]: string|number}, id?: number): Test {
-        var test: Test | null = null;
+    public getTestScheme(type: String, params: {[key: string]: string|number}, id?: number): TestScheme {
+        var test: TestScheme | null = null;
 
         switch (type) {
             case ConnectionTestScheme.type:

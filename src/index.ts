@@ -1,46 +1,48 @@
 /**
  * Required External Modules
  */
- import * as dotenv from 'dotenv';
- import express from 'express';
- import cors from 'cors';
- import helmet from 'helmet';
+import * as dotenv from 'dotenv';
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
 
  /**
   * Import routes
   */
- import indexRouter from './routes/index';
- import testSuiteSchemesRouter from './routes/testSuiteSchemes';
- 
- dotenv.config();
+import indexRouter from './routes/index';
+import testSuiteSchemesRouter from './routes/testSuiteSchemes';
+import testSuitesRouter from './routes/testSuites';
+
+dotenv.config();
 
 /**
  * App Variables
  */
- if (!process.env.PORT) {
-    process.exit(1);
- }
- 
- const PORT: number = parseInt(process.env.PORT as string, 10);
- 
- const app = express();
+if (!process.env.PORT) {
+   process.exit(1);
+}
+
+const PORT: number = parseInt(process.env.PORT as string, 10);
+
+const app = express();
 
 /**
  *  App Configuration
  */
- app.use(helmet());
- app.use(cors());
- app.use(express.json());
+app.use(helmet());
+app.use(cors());
+app.use(express.json());
 
  /**
   * Routes
   */
- app.use('/', indexRouter);
- app.use('/testsuiteschemes', testSuiteSchemesRouter);
+app.use('/', indexRouter);
+app.use('/testsuiteschemes', testSuiteSchemesRouter);
+app.use('/testsuites', testSuitesRouter);
 
 /**
  * Server Activation
  */
- app.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
-  });
+app.listen(PORT, () => {
+   console.log(`Listening on port ${PORT}`);
+});
