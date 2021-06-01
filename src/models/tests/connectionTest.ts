@@ -7,20 +7,20 @@ class ConnectionTest extends Test {
     private host: string;
     private port: number;
 
-    private constructor(host: string, port: number) {
-        super();
+    private constructor(host: string, port: number, id?: number) {
+        super(id);
         this.host = host;
         this.port = port;
     }
 
-    public static getInstance(params: any): ConnectionTest {
+    public static getInstance(params: any, id?: number): ConnectionTest {
         const host: string = params.host;
         const port: number = params.port;
         if(!host || !port) {
             throw new Error('Missing parameters to create test of type ' + this.type);
         }
 
-        return new ConnectionTest(host, port);
+        return new ConnectionTest(host, port, id);
     }
 
     public get params(): {} {

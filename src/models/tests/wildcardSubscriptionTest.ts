@@ -5,12 +5,12 @@ import crypto from 'crypto';
 class WildcardSubscriptionTest extends Test {
     public static readonly type: string = 'wildcardSubscription';
 
-    private constructor() {
-        super();
+    private constructor(id?: number) {
+        super(id);
     }
 
-    public static getInstance(): WildcardSubscriptionTest {
-        return new WildcardSubscriptionTest();
+    public static getInstance(id?: number): WildcardSubscriptionTest {
+        return new WildcardSubscriptionTest(id);
     }
 
     public get params(): {} {

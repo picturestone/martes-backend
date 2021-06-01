@@ -6,18 +6,9 @@ class DatabaseWrapper {
     private static _instance: DatabaseWrapper;
     private readonly dbPath = './database.db';
 
-    private constructor() {
-        if (!fs.existsSync(this.dbPath)) {
-            this.createNewDbFile();
-        }
-    }
-
-    private createNewDbFile() {
+    // TODO: This method is asynchronous and should be made with promises so it can be synchronously waited for. 
+    private createNewDbFile(): Promise<void> {
         fs.openSync(this.dbPath, 'w');
-
-        const handleError = (err: Error) => {
-            console.log(err.message);
-        }
 
         const createTestSuites = `
             CREATE TABLE testsuites (
@@ -34,9 +25,23 @@ class DatabaseWrapper {
                 FOREIGN KEY(testsuitesId) REFERENCES testsuites(id)
             );
         `;
-        this.getDatabase()
-            .run(createTestSuites, handleError)
-            .run(createTests, handleError);
+        const db: Database = this.getDatabase();
+
+        return new Promise((resolve, reject) => {
+            db.run(createTestSuites, (err: Error) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    db.run(createTests, (err: Error) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve();
+                        }
+                    });
+                }
+            })
+        })
     }
 
     private getDatabase(): sqlite3.Database {
@@ -48,10 +53,19 @@ class DatabaseWrapper {
         });
     }
 
-    public static getDatabase(): Database {
+    public static async getDatabase(): Promise<Database> {
         if (!this._instance) {
             this._instance = new DatabaseWrapper();
         }
+
+        if (!fs.existsSync(this._instance.dbPath)) {
+            try {
+                await this._instance.createNewDbFile();
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+
         return this._instance.getDatabase();
     }
 }

@@ -4,12 +4,12 @@ import mqtt, { Client } from 'mqtt';
 class AuthenticationTest extends Test {
     public static readonly type: string = 'authentication';
 
-    private constructor() {
-        super();
+    private constructor(id?: number) {
+        super(id);
     }
 
-    public static getInstance(): AuthenticationTest {
-        return new AuthenticationTest();
+    public static getInstance(id?: number): AuthenticationTest {
+        return new AuthenticationTest(id);
     }
 
     public get params(): {} {

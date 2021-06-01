@@ -4,12 +4,12 @@ import mqtt, { Client } from 'mqtt';
 class DefaultPasswordTest extends Test {
     public static readonly type: string = 'defaultPassword';
 
-    private constructor() {
-        super();
+    private constructor(id?: number) {
+        super(id);
     }
 
-    public static getInstance(): DefaultPasswordTest {
-        return new DefaultPasswordTest();
+    public static getInstance(id?: number): DefaultPasswordTest {
+        return new DefaultPasswordTest(id);
     }
 
     public get params(): {} {

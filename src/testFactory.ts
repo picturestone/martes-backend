@@ -9,20 +9,20 @@ class TestFactory {
     private constructor() {
     }
 
-    public getTest(type: String, params: {[key: string]: string|number}): Test {
+    public getTest(type: String, params: {[key: string]: string|number}, id?: number): Test {
         var test: Test | null = null;
 
         switch (type) {
             case ConnectionTest.type:
-                test = ConnectionTest.getInstance(params);
+                test = ConnectionTest.getInstance(params, id);
                 break;
         
             case AuthenticationTest.type:
-                test = AuthenticationTest.getInstance();
+                test = AuthenticationTest.getInstance(id);
                 break;
             
             case WildcardSubscriptionTest.type:
-                test = WildcardSubscriptionTest.getInstance();
+                test = WildcardSubscriptionTest.getInstance(id);
                 break;
 
             default:

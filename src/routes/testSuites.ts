@@ -6,6 +6,23 @@ import TestFactory from '../testFactory';
 
 const router: Router = express.Router();
 
+router.get('/:id', (req, res) => {
+    const id: number = Number(req.params.id);
+    if (id === NaN) {
+        res.status(400).send('Id must be a number');
+        return;
+    }
+    (new TestSuiteFacade()).getById(id, (err: Error | null, testSuite: TestSuite | null) => {
+        if (err) {
+            res.status(500).send(err.message);
+        } else if (testSuite === null) {
+            res.sendStatus(404);
+        } else {
+            res.json(testSuite);
+        }
+    });
+});
+
 router.post('/', (req, res) => {
     const testFactory: TestFactory = TestFactory.getInstance();
     const testSuite: TestSuite = new TestSuite(req.body.name);
@@ -24,7 +41,7 @@ router.post('/', (req, res) => {
         if (err) {
             res.status(500).send(err.message);
         } else {
-            res.status(200).send(identifier);
+            res.status(201).send(identifier + '', );
         }
     });
 });
