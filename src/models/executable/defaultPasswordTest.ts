@@ -3,6 +3,10 @@ import DefaultPasswordTestScheme from '../schemes/defaultPasswordTestScheme';
 import Executable from './executable';
 
 class DefaultPasswordTest extends DefaultPasswordTestScheme implements Executable {
+    public constructor(id?: number) {
+        super(id);
+    }
+
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         const client: Client = mqtt.connect(null, {
             host: '192.168.1.50',

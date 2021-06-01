@@ -3,6 +3,10 @@ import ConnectionTestScheme from '../schemes/connectionTestScheme';
 import Executable from './executable';
 
 class ConnectionTest extends ConnectionTestScheme implements Executable {
+    public constructor(host: string, port: number, id?: number) {
+        super(host, port, id);
+    }
+
     public execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         var isServerRunning: boolean = false;
 

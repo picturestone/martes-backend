@@ -3,6 +3,10 @@ import AuthenticationTestScheme from '../schemes/authenticationTestScheme';
 import Executable from './executable';
 
 class AuthenticationTest extends AuthenticationTestScheme implements Executable {
+    public constructor(id?: number) {
+        super(id);
+    }
+
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         var isUnauthenticatedConnection: boolean = false;
 

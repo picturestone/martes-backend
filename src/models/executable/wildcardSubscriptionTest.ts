@@ -4,6 +4,10 @@ import WildcardSubscriptionTestScheme from '../schemes/wildcardSubscriptionTestS
 import Executable from './executable';
 
 class WildcardSubscriptionTest extends WildcardSubscriptionTestScheme implements Executable {
+    public constructor(id?: number) {
+        super(id);
+    }
+
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         var isWildcardSubscriptionSuccessful: boolean = false;
         const uuid: string = crypto.randomBytes(16).toString('base64');
