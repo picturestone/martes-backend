@@ -1,4 +1,4 @@
-abstract class Test {
+abstract class TestScheme {
     public id?: number;
 
     constructor(id?: number) {
@@ -10,4 +10,4 @@ abstract class Test {
     public abstract get type(): string;
 }
 
-export default Test;
+export default TestScheme;
