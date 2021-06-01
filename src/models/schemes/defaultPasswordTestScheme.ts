@@ -1,5 +1,6 @@
 import TestScheme from './testScheme';
-import mqtt, { Client } from 'mqtt';
+import Executable from '../executable/executable';
+import DefaultPasswordTest from '../executable/defaultPasswordTest';
 
 class DefaultPasswordTestScheme extends TestScheme {
     public static readonly type: string = 'defaultPassword';
@@ -10,6 +11,10 @@ class DefaultPasswordTestScheme extends TestScheme {
 
     public static getInstance(id?: number): DefaultPasswordTestScheme {
         return new DefaultPasswordTestScheme(id);
+    }
+
+    public getExecutableInstance(): Executable {
+        return new DefaultPasswordTest();
     }
 
     public get params(): {} {

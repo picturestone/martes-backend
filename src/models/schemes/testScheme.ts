@@ -1,3 +1,5 @@
+import Executable from "../executable/executable";
+
 abstract class TestScheme {
     public id?: number;
 
@@ -7,6 +9,7 @@ abstract class TestScheme {
 
     public abstract get params(): {};
     public abstract get type(): string;
+    public abstract getExecutableInstance(): Executable;
 }
 
 export default TestScheme;

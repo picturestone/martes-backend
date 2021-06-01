@@ -1,5 +1,6 @@
 import TestScheme from './testScheme';
-import mqtt, { Client } from 'mqtt';
+import Executable from '../executable/executable';
+import DataEncryptionTest from '../executable/dataEncryptionTest';
 
 class DataEncryptionTestScheme extends TestScheme {
     public static readonly type: string = 'dataEncryption';
@@ -10,6 +11,10 @@ class DataEncryptionTestScheme extends TestScheme {
 
     public static getInstance(id?: number): DataEncryptionTestScheme {
         return new DataEncryptionTestScheme(id);
+    }
+
+    public getExecutableInstance(): Executable {
+        return new DataEncryptionTest();
     }
 
     public get params(): {} {

@@ -1,6 +1,6 @@
 import TestScheme from './testScheme';
-import mqtt, { Client } from 'mqtt';
-import crypto from 'crypto';
+import Executable from '../executable/executable';
+import WildcardSubscriptionTest from '../executable/wildcardSubscriptionTest';
 
 class WildcardSubscriptionTestScheme extends TestScheme {
     public static readonly type: string = 'wildcardSubscription';
@@ -11,6 +11,10 @@ class WildcardSubscriptionTestScheme extends TestScheme {
 
     public static getInstance(id?: number): WildcardSubscriptionTestScheme {
         return new WildcardSubscriptionTestScheme(id);
+    }
+
+    public getExecutableInstance(): Executable {
+        return new WildcardSubscriptionTest();
     }
 
     public get params(): {} {

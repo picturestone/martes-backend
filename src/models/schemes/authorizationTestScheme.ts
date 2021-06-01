@@ -1,5 +1,6 @@
 import TestScheme from './testScheme';
-import mqtt, { Client } from 'mqtt';
+import AuthorizationTest from '../executable/authorizationTest';
+import Executable from '../executable/executable';
 
 class AuthorizationTestScheme extends TestScheme {
     public static readonly type: string = 'authorization';
@@ -10,6 +11,10 @@ class AuthorizationTestScheme extends TestScheme {
 
     public static getInstance(id?: number): AuthorizationTestScheme {
         return new AuthorizationTestScheme(id);
+    }
+
+    public getExecutableInstance(): Executable {
+        return new AuthorizationTest();
     }
 
     public get params(): {} {

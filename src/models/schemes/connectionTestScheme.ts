@@ -1,5 +1,6 @@
 import TestScheme from './testScheme';
-import mqtt, { Client } from 'mqtt';
+import Executable from '../executable/executable';
+import ConnectionTest from '../executable/connectionTest';
 
 class ConnectionTestScheme extends TestScheme {
     public static readonly type: string = 'connection';
@@ -21,6 +22,10 @@ class ConnectionTestScheme extends TestScheme {
         }
 
         return new ConnectionTestScheme(host, port, id);
+    }
+
+    public getExecutableInstance(): Executable {
+        return new ConnectionTest(this.host, this.port);
     }
 
     public get params(): {} {
