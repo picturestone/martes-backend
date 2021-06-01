@@ -1,7 +1,7 @@
-import AuthenticationTest from './models/schemes/authenticationTest';
-import ConnectionTest from './models/schemes/connectionTest';
+import AuthenticationTestScheme from './models/schemes/authenticationTestScheme';
+import ConnectionTestScheme from './models/schemes/connectionTestScheme';
 import Test from './models/schemes/testScheme';
-import WildcardSubscriptionTest from './models/schemes/wildcardSubscriptionTest';
+import WildcardSubscriptionTestScheme from './models/schemes/wildcardSubscriptionTestScheme';
 
 class TestFactory {
     private static _instance: TestFactory;
@@ -13,16 +13,16 @@ class TestFactory {
         var test: Test | null = null;
 
         switch (type) {
-            case ConnectionTest.type:
-                test = ConnectionTest.getInstance(params, id);
+            case ConnectionTestScheme.type:
+                test = ConnectionTestScheme.getInstance(params, id);
                 break;
         
-            case AuthenticationTest.type:
-                test = AuthenticationTest.getInstance(id);
+            case AuthenticationTestScheme.type:
+                test = AuthenticationTestScheme.getInstance(id);
                 break;
             
-            case WildcardSubscriptionTest.type:
-                test = WildcardSubscriptionTest.getInstance(id);
+            case WildcardSubscriptionTestScheme.type:
+                test = WildcardSubscriptionTestScheme.getInstance(id);
                 break;
 
             default:
@@ -38,9 +38,9 @@ class TestFactory {
 
     public getTestTypes(): String[] {
         return [
-            ConnectionTest.type,
-            AuthenticationTest.type,
-            WildcardSubscriptionTest.type
+            ConnectionTestScheme.type,
+            AuthenticationTestScheme.type,
+            WildcardSubscriptionTestScheme.type
         ];
     }
 

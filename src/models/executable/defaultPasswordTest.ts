@@ -1,25 +1,8 @@
-import TestScheme from './testScheme';
 import mqtt, { Client } from 'mqtt';
+import DefaultPasswordTestScheme from '../schemes/defaultPasswordTestScheme';
+import Executable from './executable';
 
-class DefaultPasswordTest extends TestScheme {
-    public static readonly type: string = 'defaultPassword';
-
-    private constructor(id?: number) {
-        super(id);
-    }
-
-    public static getInstance(id?: number): DefaultPasswordTest {
-        return new DefaultPasswordTest(id);
-    }
-
-    public get params(): {} {
-        throw new Error("Method not implemented.");
-    }
-
-    public get type(): string {
-        return DefaultPasswordTest.type;
-    }
-    
+class DefaultPasswordTest extends DefaultPasswordTestScheme implements Executable {
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         const client: Client = mqtt.connect(null, {
             host: '192.168.1.50',

@@ -1,25 +1,8 @@
-import TestScheme from './testScheme';
 import mqtt, { Client } from 'mqtt';
+import AuthorizationTestScheme from '../schemes/authorizationTestScheme';
+import Executable from './executable';
 
-class AuthorizationTest extends TestScheme {
-    public static readonly type: string = 'authorization';
-
-    private constructor(id?: number) {
-        super(id);
-    }
-
-    public static getInstance(id?: number): AuthorizationTest {
-        return new AuthorizationTest(id);
-    }
-
-    public get params(): {} {
-        throw new Error("Method not implemented.");
-    }
-
-    public get type(): string {
-        return AuthorizationTest.type;
-    }
-
+class AuthorizationTest extends AuthorizationTestScheme implements Executable {
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         const client: Client = mqtt.connect(null, {
             host: '192.168.1.50',

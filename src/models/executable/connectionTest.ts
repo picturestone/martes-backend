@@ -1,39 +1,8 @@
-import TestScheme from './testScheme';
 import mqtt, { Client } from 'mqtt';
+import ConnectionTestScheme from '../schemes/connectionTestScheme';
+import Executable from './executable';
 
-class ConnectionTest extends TestScheme {
-    public static readonly type: string = 'connection';
-
-    private host: string;
-    private port: number;
-
-    private constructor(host: string, port: number, id?: number) {
-        super(id);
-        this.host = host;
-        this.port = port;
-    }
-
-    public static getInstance(params: any, id?: number): ConnectionTest {
-        const host: string = params.host;
-        const port: number = params.port;
-        if(!host || !port) {
-            throw new Error('Missing parameters to create test of type ' + this.type);
-        }
-
-        return new ConnectionTest(host, port, id);
-    }
-
-    public get params(): {} {
-        return {
-            host: this.host,
-            port: this.port
-        }
-    }
-
-    public get type(): string {
-        return ConnectionTest.type;
-    }
-    
+class ConnectionTest extends ConnectionTestScheme implements Executable {
     public execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         var isServerRunning: boolean = false;
 

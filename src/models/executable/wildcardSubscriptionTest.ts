@@ -1,26 +1,9 @@
-import TestScheme from './testScheme';
 import mqtt, { Client } from 'mqtt';
 import crypto from 'crypto';
+import WildcardSubscriptionTestScheme from '../schemes/wildcardSubscriptionTestScheme';
+import Executable from './executable';
 
-class WildcardSubscriptionTest extends TestScheme {
-    public static readonly type: string = 'wildcardSubscription';
-
-    private constructor(id?: number) {
-        super(id);
-    }
-
-    public static getInstance(id?: number): WildcardSubscriptionTest {
-        return new WildcardSubscriptionTest(id);
-    }
-
-    public get params(): {} {
-        throw new Error("Method not implemented.");
-    }
-
-    public get type(): string {
-        return WildcardSubscriptionTest.type;
-    }
-    
+class WildcardSubscriptionTest extends WildcardSubscriptionTestScheme implements Executable {
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         var isWildcardSubscriptionSuccessful: boolean = false;
         const uuid: string = crypto.randomBytes(16).toString('base64');
