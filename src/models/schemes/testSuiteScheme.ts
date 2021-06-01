@@ -10,15 +10,6 @@ class TestSuiteScheme {
         this.id = id;
         this.testSchemes = [];
     }
-
-    public execute() {
-        this.testSchemes.forEach((testScheme: TestScheme) => {
-            testScheme.execute((isSuccessful: boolean, message?: string) => {
-                console.log(isSuccessful);
-                console.log(message)
-            });
-        });
-    }
 }
 
 export default TestSuiteScheme;
