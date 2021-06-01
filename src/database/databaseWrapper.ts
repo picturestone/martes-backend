@@ -6,7 +6,6 @@ class DatabaseWrapper {
     private static _instance: DatabaseWrapper;
     private readonly dbPath = './database.db';
 
-    // TODO: This method is asynchronous and should be made with promises so it can be synchronously waited for. 
     private createNewDbFile(): Promise<void> {
         fs.openSync(this.dbPath, 'w');
 
