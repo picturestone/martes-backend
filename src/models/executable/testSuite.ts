@@ -5,11 +5,12 @@ import ExecutableTest from "./executableTest";
 class TestSuite {
     public name: string;
     public tests: ExecutableTest<any>[];
-    public id?: number;
+    public id: number | undefined;
 
     constructor(testSuiteScheme: TestSuiteScheme, id?: number) {
         this.name = testSuiteScheme.name;
         this.tests = [];
+        this.id = id;
         testSuiteScheme.testSchemes.forEach((testScheme: TestScheme<any>) => {
             this.tests.push(testScheme.generateExecutableTest());
         });

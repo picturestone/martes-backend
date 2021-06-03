@@ -1,13 +1,7 @@
-import AuthenticationTest from './models/executable/authenticationTest';
-import ConnectionTest from './models/executable/connectionTest';
-import ExecutableTest from './models/executable/executableTest';
-import WildcardSubscriptionTest from './models/executable/wildcardSubscriptionTest';
 import AuthenticationTestScheme from './models/schemes/authenticationTestScheme';
 import ConnectionTestScheme from './models/schemes/connectionTestScheme';
 import TestScheme from './models/schemes/testScheme';
 import WildcardSubscriptionTestScheme from './models/schemes/wildcardSubscriptionTestScheme';
-import ConnectionTestParameters from './models/testparameters/connectionTestParameters';
-import TestType from './models/testtype';
 
 class TestFactory {
     private static _instance: TestFactory;

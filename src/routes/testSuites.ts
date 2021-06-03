@@ -2,9 +2,7 @@ import express, { Router } from 'express';
 import TestSuiteFacade from '../database/testSuiteFacade';
 import TestSuiteSchemeFacade from '../database/testSuiteSchemeFacade';
 import TestSuite from '../models/executable/testSuite';
-import TestScheme from '../models/schemes/testScheme';
 import TestSuiteScheme from '../models/schemes/testSuiteScheme';
-import TestFactory from '../testFactory';
 
 const router: Router = express.Router();
 
