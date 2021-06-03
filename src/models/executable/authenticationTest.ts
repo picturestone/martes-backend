@@ -1,10 +1,13 @@
 import mqtt, { Client } from 'mqtt';
-import AuthenticationTestScheme from '../schemes/authenticationTestScheme';
-import Executable from './executable';
+import AuthenticationTestParameters from '../testparameters/authenticationTestParameters';
+import TestType from '../testtype';
+import ExecutableTest from './executableTest';
 
-class AuthenticationTest extends AuthenticationTestScheme implements Executable {
-    public constructor(id?: number) {
-        super(id);
+class AuthenticationTest extends ExecutableTest<AuthenticationTestParameters> {
+    public static readonly testType: TestType = TestType.Authentication;
+
+    public get testType(): TestType {
+        return AuthenticationTest.testType;
     }
 
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {

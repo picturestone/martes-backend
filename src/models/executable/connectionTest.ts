@@ -1,18 +1,21 @@
 import mqtt, { Client } from 'mqtt';
-import ConnectionTestScheme from '../schemes/connectionTestScheme';
-import Executable from './executable';
+import ConnectionTestParameters from '../testparameters/connectionTestParameters';
+import TestType from '../testtype';
+import ExecutableTest from './executableTest';
 
-class ConnectionTest extends ConnectionTestScheme implements Executable {
-    public constructor(host: string, port: number, id?: number) {
-        super(host, port, id);
+class ConnectionTest extends ExecutableTest<ConnectionTestParameters> {
+    public static readonly testType: TestType = TestType.Connection;
+
+    public get testType(): TestType {
+        return ConnectionTest.testType;
     }
 
     public execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         var isServerRunning: boolean = false;
 
         const client: Client = mqtt.connect(null, {
-            host: this.host,
-            port: this.port,
+            host: this.parameters.host,
+            port: this.parameters.port,
             reconnectPeriod: 0,
             connectTimeout: 10 * 1000
         });

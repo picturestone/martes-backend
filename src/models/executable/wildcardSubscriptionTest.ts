@@ -1,11 +1,14 @@
 import mqtt, { Client } from 'mqtt';
 import crypto from 'crypto';
-import WildcardSubscriptionTestScheme from '../schemes/wildcardSubscriptionTestScheme';
-import Executable from './executable';
+import ExecutableTest from './executableTest';
+import WildcardSubscriptionTestParameters from '../testparameters/wildcardSubscriptionTestParameters';
+import TestType from '../testtype';
 
-class WildcardSubscriptionTest extends WildcardSubscriptionTestScheme implements Executable {
-    public constructor(id?: number) {
-        super(id);
+class WildcardSubscriptionTest extends ExecutableTest<WildcardSubscriptionTestParameters> {
+    public static readonly testType: TestType = TestType.Connection;
+
+    public get testType(): TestType {
+        return WildcardSubscriptionTest.testType;
     }
 
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {

@@ -1,10 +1,8 @@
 import { Database, RunResult } from 'sqlite3';
 import DatabaseWrapper from './databaseWrapper';
-import TestScheme from '../models/schemes/testScheme';
-import TestSuiteScheme from "../models/schemes/testSuiteScheme";
 import TestFactory from '../testFactory';
 import TestSuite from '../models/executable/testSuite';
-import Executable from '../models/executable/executable';
+import Executable from '../models/executable/executableTest';
 
 class TestSuiteFacade {
     public getById(id: number, callback: (err: Error | null, testSuite: TestSuite | null) => void) {
@@ -18,10 +16,10 @@ class TestSuiteFacade {
                         callback(null, null);
                     } else {
                         const testSuite = new TestSuite(rows[0].name, rows[0].testsuiteschemeId);
-                        const tests: Executable[] = [];
+                        const tests: Executable<any>[] = [];
                         const testFactory: TestFactory = TestFactory.getInstance();
                         rows.forEach((row) => {
-                            tests.push(testFactory.getTestScheme(row.testType, JSON.parse(row.params), row.id).getExecutableInstance());
+                            tests.push(testFactory.getTestScheme(row.testType, JSON.parse(row.params), row.id).generateExecutableTest());
                         });
                         testSuite.tests = tests;
                         callback(null, testSuite);
@@ -31,7 +29,6 @@ class TestSuiteFacade {
         });
     }
 
-    // TODO fix
     public save(testSuite: TestSuite, callback: (err: Error | null, identifier: number) => void) {
         DatabaseWrapper.getDatabase().then((db: Database) => {
             const handleError = (err: Error) => {
@@ -49,10 +46,10 @@ class TestSuiteFacade {
                     return handleError(err);
                 } else {
                     // Insert all tests. Done with promises so callback is only called if all inserts are successful.
-                    sql = `INSERT INTO testschemes(testsuiteschemeId, testType, params) VALUES(?, ?, ?)`;
-                    const queries = testSuiteScheme.testSchemes.map((testScheme) => {
+                    sql = `INSERT INTO tests(testsuiteId, testType, params) VALUES(?, ?, ?)`;
+                    const queries = testSuite.tests.map((test) => {
                         return new Promise<void>((resolve, reject) => {
-                                db.run(sql, [this.lastID, testScheme.type, JSON.stringify(testScheme.params)], (err: Error) => {
+                                db.run(sql, [this.lastID, test.testType, JSON.stringify(test.parameters)], (err: Error) => {
                                     if (err) {
                                         reject(err);
                                     } else {

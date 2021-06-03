@@ -44,7 +44,7 @@ router.post('/:id', (req, res) => {
                 if (err) {
                     res.status(500).send(err.message);
                 } else {
-                    testSuite.execute();
+                    //testSuite.execute();
                     res.status(201).send(identifier + '', );
                 }
             });

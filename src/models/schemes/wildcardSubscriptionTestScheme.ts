@@ -1,28 +1,19 @@
 import TestScheme from './testScheme';
-import Executable from '../executable/executable';
+import WildcardSubscriptionTestParameters from '../testparameters/wildcardSubscriptionTestParameters';
+import TestType from '../testtype';
 import WildcardSubscriptionTest from '../executable/wildcardSubscriptionTest';
+import ExecutableTest from '../executable/executableTest';
 
-class WildcardSubscriptionTestScheme extends TestScheme {
-    public static readonly type: string = 'wildcardSubscription';
+class WildcardSubscriptionTestScheme extends TestScheme<WildcardSubscriptionTestParameters> {
+    public static readonly testType: TestType = TestType.Connection;
 
-    protected constructor(id?: number) {
-        super(id);
+    public get testType(): TestType {
+        return WildcardSubscriptionTestScheme.testType;
     }
 
-    public static getInstance(id?: number): WildcardSubscriptionTestScheme {
-        return new WildcardSubscriptionTestScheme(id);
-    }
-
-    public getExecutableInstance(): Executable {
-        return new WildcardSubscriptionTest();
-    }
-
-    public get params(): {} {
-        throw new Error("Method not implemented.");
-    }
-
-    public get type(): string {
-        return WildcardSubscriptionTestScheme.type;
+    public generateExecutableTest(): ExecutableTest<WildcardSubscriptionTestParameters> {
+        const parametersShallowCopy = Object.assign({}, this.parameters);
+        return new WildcardSubscriptionTest(parametersShallowCopy);
     }
 }
 

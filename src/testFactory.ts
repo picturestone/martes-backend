@@ -1,7 +1,13 @@
+import AuthenticationTest from './models/executable/authenticationTest';
+import ConnectionTest from './models/executable/connectionTest';
+import ExecutableTest from './models/executable/executableTest';
+import WildcardSubscriptionTest from './models/executable/wildcardSubscriptionTest';
 import AuthenticationTestScheme from './models/schemes/authenticationTestScheme';
 import ConnectionTestScheme from './models/schemes/connectionTestScheme';
 import TestScheme from './models/schemes/testScheme';
 import WildcardSubscriptionTestScheme from './models/schemes/wildcardSubscriptionTestScheme';
+import ConnectionTestParameters from './models/testparameters/connectionTestParameters';
+import TestType from './models/testtype';
 
 class TestFactory {
     private static _instance: TestFactory;
@@ -9,20 +15,25 @@ class TestFactory {
     private constructor() {
     }
 
-    public getTestScheme(type: String, params: {[key: string]: string|number}, id?: number): TestScheme {
-        var test: TestScheme | null = null;
+    public getTestScheme(testType: string, params: any, id?: number): TestScheme<any> {
+        var test: TestScheme<{}> | null = null;
 
-        switch (type) {
-            case ConnectionTestScheme.type:
-                test = ConnectionTestScheme.getInstance(params, id);
+        switch (testType) {
+            case ConnectionTestScheme.testType:
+                const host: string = params.host;
+                const port: number = params.port;
+                if(!host || !port) {
+                    throw new Error('Missing parameters to create test of type ' + testType);
+                }
+                test = new ConnectionTestScheme({host, port}, id);
                 break;
         
-            case AuthenticationTestScheme.type:
-                test = AuthenticationTestScheme.getInstance(id);
+            case AuthenticationTestScheme.testType:
+                test = new AuthenticationTestScheme({}, id);
                 break;
             
-            case WildcardSubscriptionTestScheme.type:
-                test = WildcardSubscriptionTestScheme.getInstance(id);
+            case WildcardSubscriptionTestScheme.testType:
+                test = new WildcardSubscriptionTestScheme({}, id);
                 break;
 
             default:
@@ -30,18 +41,10 @@ class TestFactory {
         }
 
         if (!test) {
-            throw new Error('Test with type \'' + type +'\' not found.');
+            throw new Error('Test with type ' + testType +' not found.');
         }
 
         return test;
-    }
-
-    public getTestTypes(): String[] {
-        return [
-            ConnectionTestScheme.type,
-            AuthenticationTestScheme.type,
-            WildcardSubscriptionTestScheme.type
-        ];
     }
 
     public static getInstance(): TestFactory {

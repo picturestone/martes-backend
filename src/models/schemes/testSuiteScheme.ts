@@ -2,7 +2,7 @@ import TestScheme from "./testScheme";
 
 class TestSuiteScheme {
     public name: string;
-    public testSchemes: TestScheme[];
+    public testSchemes: TestScheme<any>[];
     public id?: number;
 
     constructor(name: string, id?: number) {

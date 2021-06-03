@@ -1,22 +1,22 @@
 import TestScheme from "../schemes/testScheme";
 import TestSuiteScheme from "../schemes/testSuiteScheme";
-import Executable from "./executable";
+import ExecutableTest from "./executableTest";
 
 class TestSuite {
     public name: string;
-    public tests: Executable[];
+    public tests: ExecutableTest<any>[];
     public id?: number;
 
     constructor(testSuiteScheme: TestSuiteScheme, id?: number) {
         this.name = testSuiteScheme.name;
         this.tests = [];
-        testSuiteScheme.testSchemes.forEach((testScheme: TestScheme) => {
-            this.tests.push(testScheme.getExecutableInstance());
+        testSuiteScheme.testSchemes.forEach((testScheme: TestScheme<any>) => {
+            this.tests.push(testScheme.generateExecutableTest());
         });
     }
 
     public execute() {
-        this.tests.forEach((test: Executable) => {
+        this.tests.forEach((test: ExecutableTest<any>) => {
             test.execute((isSuccessful: boolean, message?: string) => {
                 console.log(isSuccessful);
                 console.log(message)

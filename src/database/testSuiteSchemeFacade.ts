@@ -16,10 +16,10 @@ class TestSuiteSchemeFacade {
                         callback(null, null);
                     } else {
                         const testSuiteScheme = new TestSuiteScheme(rows[0].name, rows[0].testsuiteschemeId);
-                        const testSchemes: TestScheme[] = [];
+                        const testSchemes: TestScheme<any>[] = [];
                         const testFactory: TestFactory = TestFactory.getInstance();
                         rows.forEach((row) => {
-                            testSchemes.push(testFactory.getTestScheme(row.testType, JSON.parse(row.params), row.id));
+                            testSchemes.push(testFactory.getTestScheme(row.testType, JSON.parse(row.parameters), row.id));
                         });
                         testSuiteScheme.testSchemes = testSchemes;
                         callback(null, testSuiteScheme);
@@ -46,10 +46,10 @@ class TestSuiteSchemeFacade {
                     return handleError(err);
                 } else {
                     // Insert all tests. Done with promises so callback is only called if all inserts are successful.
-                    sql = `INSERT INTO testschemes(testsuiteschemeId, testType, params) VALUES(?, ?, ?)`;
+                    sql = `INSERT INTO testschemes(testsuiteschemeId, testType, parameters) VALUES(?, ?, ?)`;
                     const queries = testSuiteScheme.testSchemes.map((testScheme) => {
                         return new Promise<void>((resolve, reject) => {
-                                db.run(sql, [this.lastID, testScheme.type, JSON.stringify(testScheme.params)], (err: Error) => {
+                                db.run(sql, [this.lastID, testScheme.testType, JSON.stringify(testScheme.parameters)], (err: Error) => {
                                     if (err) {
                                         reject(err);
                                     } else {

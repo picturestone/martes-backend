@@ -1,28 +1,19 @@
 import TestScheme from './testScheme';
-import Executable from '../executable/executable';
+import AuthenticationTestParameters from '../testparameters/authenticationTestParameters';
+import TestType from '../testtype';
+import ExecutableTest from '../executable/executableTest';
 import AuthenticationTest from '../executable/authenticationTest';
 
-class AuthenticationTestScheme extends TestScheme {
-    public static readonly type: string = 'authentication';
+class AuthenticationTestScheme extends TestScheme<AuthenticationTestParameters> {
+    public static readonly testType: TestType = TestType.Connection;
 
-    protected constructor(id?: number) {
-        super(id);
+    public get testType(): TestType {
+        return AuthenticationTestScheme.testType;
     }
 
-    public static getInstance(id?: number): AuthenticationTestScheme {
-        return new AuthenticationTestScheme(id);
-    }
-
-    public getExecutableInstance(): Executable {
-        return new AuthenticationTest();
-    }
-
-    public get params(): {} {
-        throw new Error("Method not implemented.");
-    }
-
-    public get type(): string {
-        return AuthenticationTestScheme.type;
+    public generateExecutableTest(): ExecutableTest<AuthenticationTestParameters> {
+        const parametersShallowCopy = Object.assign({}, this.parameters);
+        return new AuthenticationTest(parametersShallowCopy);
     }
 }
 

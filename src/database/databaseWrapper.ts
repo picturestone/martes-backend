@@ -20,7 +20,7 @@ class DatabaseWrapper {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 testsuiteschemeId INTEGER,
                 testType TEXT NOT NULL,
-                params TEXT NOT NULL,
+                parameters TEXT NOT NULL,
                 FOREIGN KEY(testsuiteschemeId) REFERENCES testsuiteschemes(id)
             );
         `;

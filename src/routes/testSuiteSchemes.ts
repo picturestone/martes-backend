@@ -2,6 +2,7 @@ import express, { Router } from 'express';
 import TestSuiteSchemeFacade from '../database/testSuiteSchemeFacade';
 import TestScheme from '../models/schemes/testScheme';
 import TestSuiteScheme from '../models/schemes/testSuiteScheme';
+import TestType from '../models/testtype';
 import TestFactory from '../testFactory';
 
 const router: Router = express.Router();
@@ -28,8 +29,8 @@ router.post('/', (req, res) => {
     const testSuiteScheme: TestSuiteScheme = new TestSuiteScheme(req.body.name);
 
     try {
-        req.body.tests.forEach((testData: { type: String; params: { [key: string]: string | number; }; }) => {
-            const testScheme: TestScheme = testFactory.getTestScheme(testData.type, testData.params);
+        req.body.tests.forEach((testData: { testType: string; params: any; }) => {
+            const testScheme: TestScheme<any> = testFactory.getTestScheme(testData.testType, testData.params);
             testSuiteScheme.testSchemes.push(testScheme);
         });
     } catch (error) {

@@ -1,15 +1,17 @@
-import Executable from "../executable/executable";
+import ExecutableTest from "../executable/executableTest";
+import TestType from "../testtype";
 
-abstract class TestScheme {
+abstract class TestScheme<parametersType> {
     public id?: number;
+    public parameters: parametersType;
 
-    constructor(id?: number) {
+    constructor(parameters: parametersType, id?: number) {
         this.id = id;
+        this.parameters = parameters;
     }
 
-    public abstract get params(): {};
-    public abstract get type(): string;
-    public abstract getExecutableInstance(): Executable;
+    public abstract get testType(): TestType;
+    public abstract generateExecutableTest(): ExecutableTest<parametersType>;
 }
 
 export default TestScheme;
