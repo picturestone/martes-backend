@@ -1,5 +1,3 @@
-import TestScheme from "../schemes/testScheme";
-import TestSuiteScheme from "../schemes/testSuiteScheme";
 import ExecutableTest from "./executableTest";
 
 class TestSuite {

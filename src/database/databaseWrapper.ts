@@ -51,7 +51,7 @@ class DatabaseWrapper {
                 const sql = `
                     CREATE TABLE testsuites (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        name TEXT NOT NULL UNIQUE
+                        name TEXT NOT NULL
                     );
                 `;
                 db.run(sql, (err: Error) => {
