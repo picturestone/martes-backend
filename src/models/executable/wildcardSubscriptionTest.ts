@@ -11,7 +11,7 @@ class WildcardSubscriptionTest extends ExecutableTest<WildcardSubscriptionTestPa
         return WildcardSubscriptionTest.testType;
     }
 
-    execute(callback: (isSuccessful: boolean, message?: string) => any): void {
+    public executeTestScript(callback: (err: Error | null, isFinishedSuccessfuly?: boolean, failureReason?: string) => void): void {
         var isWildcardSubscriptionSuccessful: boolean = false;
         const uuid: string = crypto.randomBytes(16).toString('base64');
 
@@ -25,7 +25,7 @@ class WildcardSubscriptionTest extends ExecutableTest<WildcardSubscriptionTestPa
         unauthenticatedClient.on('connect', () => {
             unauthenticatedClient.subscribe('#', (error, granted) => {
                 // Log error:
-                callback(false, error.message);
+                callback(error);
 
                 unauthenticatedClient.on('message', (topic, message) => {
                     if (message.toString() === uuid) {
@@ -34,14 +34,16 @@ class WildcardSubscriptionTest extends ExecutableTest<WildcardSubscriptionTestPa
                         // Close connection.
                         unauthenticatedClient.end(true);
                         // Log failed test:
-                        callback(false, 'Subscribing and publishing to wild card topic \'#\' is possible.');
+                        callback(new Error('Subscribing and publishing to wild card topic \'#\' is possible.'));
                     }
                 });
 
                 // Replace topic with allowed one.
                 unauthenticatedClient.publish('martes/test', uuid, (error) => {
-                    // Log error
-                    callback(false, error?.message)
+                    if(error) {
+                        // Log error
+                        callback(error)
+                    }
                 });
             });
         });

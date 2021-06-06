@@ -13,9 +13,10 @@ class TestSuite {
 
     public execute() {
         this.tests.forEach((test: ExecutableTest<any>) => {
-            test.execute((isSuccessful: boolean, message?: string) => {
-                console.log(isSuccessful);
-                console.log(message)
+            test.execute((err: Error | null) => {
+                if(err) {
+                    console.log(err.message)
+                }
             });
         });
     }
