@@ -11,7 +11,7 @@ class AuthenticationTestScheme extends TestScheme<AuthenticationTestParameters> 
         return AuthenticationTestScheme.testType;
     }
 
-    public generateExecutableTest(): ExecutableTest<AuthenticationTestParameters> {
+    public getExecutableTest(): ExecutableTest<AuthenticationTestParameters> {
         const parametersShallowCopy = Object.assign({}, this.parameters);
         return new AuthenticationTest(parametersShallowCopy);
     }

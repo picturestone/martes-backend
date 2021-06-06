@@ -20,7 +20,7 @@ abstract class TestScheme<parametersType> {
     }
 
     public abstract get testType(): TestType;
-    public abstract generateExecutableTest(): ExecutableTest<parametersType>;
+    public abstract getExecutableTest(): ExecutableTest<parametersType>;
 }
 
 export default TestScheme;

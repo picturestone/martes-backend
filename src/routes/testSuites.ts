@@ -36,7 +36,7 @@ router.post('/:id', (req, res) => {
         } else if (testSuiteScheme === null) {
             res.sendStatus(404);
         } else {
-            const testSuite: TestSuite = new TestSuite(testSuiteScheme);
+            const testSuite: TestSuite = testSuiteScheme.getTestSuite();
 
             (new TestSuiteFacade()).save(testSuite, (err: Error | null, identifier: number) => {
                 if (err) {

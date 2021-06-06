@@ -7,13 +7,10 @@ class TestSuite {
     public tests: ExecutableTest<any>[];
     public id: number | undefined;
 
-    constructor(testSuiteScheme: TestSuiteScheme, id?: number) {
-        this.name = testSuiteScheme.name;
-        this.tests = [];
+    constructor(name: string, id?: number) {
+        this.name = name;
         this.id = id;
-        testSuiteScheme.testSchemes.forEach((testScheme: TestScheme<any>) => {
-            this.tests.push(testScheme.generateExecutableTest());
-        });
+        this.tests = [];
     }
 
     public execute() {

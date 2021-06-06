@@ -11,7 +11,7 @@ class WildcardSubscriptionTestScheme extends TestScheme<WildcardSubscriptionTest
         return WildcardSubscriptionTestScheme.testType;
     }
 
-    public generateExecutableTest(): ExecutableTest<WildcardSubscriptionTestParameters> {
+    public getExecutableTest(): ExecutableTest<WildcardSubscriptionTestParameters> {
         const parametersShallowCopy = Object.assign({}, this.parameters);
         return new WildcardSubscriptionTest(parametersShallowCopy);
     }

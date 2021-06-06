@@ -19,7 +19,7 @@ class TestSuiteFacade {
                         const tests: Executable<any>[] = [];
                         const testFactory: TestFactory = TestFactory.getInstance();
                         rows.forEach((row) => {
-                            tests.push(testFactory.getTestScheme(row.testType, JSON.parse(row.params), row.id).generateExecutableTest());
+                            tests.push(testFactory.getExecutableTest(row.testType, JSON.parse(row.parameters), row.id));
                         });
                         testSuite.tests = tests;
                         callback(null, testSuite);
@@ -46,7 +46,7 @@ class TestSuiteFacade {
                     return handleError(err);
                 } else {
                     // Insert all tests. Done with promises so callback is only called if all inserts are successful.
-                    sql = `INSERT INTO tests(testsuiteId, testType, params) VALUES(?, ?, ?)`;
+                    sql = `INSERT INTO tests(testsuiteId, testType, parameters) VALUES(?, ?, ?)`;
                     const queries = testSuite.tests.map((test) => {
                         return new Promise<void>((resolve, reject) => {
                                 db.run(sql, [this.lastID, test.testType, JSON.stringify(test.parameters)], (err: Error) => {

@@ -1,3 +1,5 @@
+import ExecutableTest from "../executable/executableTest";
+import TestSuite from "../executable/testSuite";
 import TestScheme from "./testScheme";
 
 class TestSuiteScheme {
@@ -9,6 +11,16 @@ class TestSuiteScheme {
         this.name = name;
         this.id = id;
         this.testSchemes = [];
+    }
+
+    public getTestSuite(): TestSuite {
+        const testSuite: TestSuite = new TestSuite(this.name);
+        const tests: ExecutableTest<any>[] = [];
+        this.testSchemes.forEach((testScheme: TestScheme<any>) => {
+            tests.push(testScheme.getExecutableTest());
+        });
+        testSuite.tests = tests;
+        return testSuite;
     }
 }
 

@@ -11,7 +11,7 @@ class ConnectionTestScheme extends TestScheme<ConnectionTestParameters> {
         return ConnectionTestScheme.testType;
     }
 
-    public generateExecutableTest(): ExecutableTest<ConnectionTestParameters> {
+    public getExecutableTest(): ExecutableTest<ConnectionTestParameters> {
         const parametersShallowCopy = Object.assign({}, this.parameters);
         return new ConnectionTest(parametersShallowCopy);
     }
