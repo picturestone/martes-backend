@@ -1,9 +1,9 @@
-import Test from "./tests/test";
+import ExecutableTest from "./executableTest";
 
 class TestSuite {
     public name: string;
-    public tests: Test[];
-    public id?: number;
+    public tests: ExecutableTest<any>[];
+    public id: number | undefined;
 
     constructor(name: string, id?: number) {
         this.name = name;
@@ -12,7 +12,7 @@ class TestSuite {
     }
 
     public execute() {
-        this.tests.forEach((test: Test) => {
+        this.tests.forEach((test: ExecutableTest<any>) => {
             test.execute((isSuccessful: boolean, message?: string) => {
                 console.log(isSuccessful);
                 console.log(message)

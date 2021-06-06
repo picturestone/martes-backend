@@ -1,23 +1,13 @@
-import Test from "./test";
 import mqtt, { Client } from 'mqtt';
+import AuthenticationTestParameters from '../testparameters/authenticationTestParameters';
+import TestType from '../testtype';
+import ExecutableTest from './executableTest';
 
-class AuthenticationTest extends Test {
-    public static readonly type: string = 'authentication';
+class AuthenticationTest extends ExecutableTest<AuthenticationTestParameters> {
+    public static readonly testType: TestType = TestType.Authentication;
 
-    private constructor(id?: number) {
-        super(id);
-    }
-
-    public static getInstance(id?: number): AuthenticationTest {
-        return new AuthenticationTest(id);
-    }
-
-    public get params(): {} {
-        throw new Error("Method not implemented.");
-    }
-
-    public get type(): string {
-        return AuthenticationTest.type;
+    public get testType(): TestType {
+        return AuthenticationTest.testType;
     }
 
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {

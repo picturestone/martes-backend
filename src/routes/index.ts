@@ -1,14 +1,11 @@
 import express, { Router } from 'express';
-import Test from '../models/tests/test';
-import TestFactory from '../testFactory';
-
 const router: Router = express.Router();
 
 router.get('/', (req, res) => {
     // var test: Test;
 
     // try {
-    //     test = TestFactory.getInstance().getTest('connection');
+    //     test = TestFactory.getInstance().getTestScheme('connection');
 
     //     test.execute((isSuccessful, message) => {
     //         if (isSuccessful) {

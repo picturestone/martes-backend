@@ -1,8 +1,8 @@
 import express, { Router } from 'express';
 import TestSuiteFacade from '../database/testSuiteFacade';
-import Test from '../models/tests/test';
-import TestSuite from '../models/testSuite';
-import TestFactory from '../testFactory';
+import TestSuiteSchemeFacade from '../database/testSuiteSchemeFacade';
+import TestSuite from '../models/executable/testSuite';
+import TestSuiteScheme from '../models/schemes/testSuiteScheme';
 
 const router: Router = express.Router();
 
@@ -23,25 +23,29 @@ router.get('/:id', (req, res) => {
     });
 });
 
-router.post('/', (req, res) => {
-    const testFactory: TestFactory = TestFactory.getInstance();
-    const testSuite: TestSuite = new TestSuite(req.body.name);
-
-    try {
-        req.body.tests.forEach((testData: { type: String; params: { [key: string]: string | number; }; }) => {
-            const test: Test = testFactory.getTest(testData.type, testData.params);
-            testSuite.tests.push(test);
-        });
-    } catch (error) {
-        res.status(400).send(error.message);
+// Creates a testSuite from the testSuiteScheme with the given ID and starts the testsuite.
+router.post('/:id', (req, res) => {
+    const id: number = Number(req.params.id);
+    if (id === NaN) {
+        res.status(400).send('Id must be a number');
         return;
     }
-
-    (new TestSuiteFacade()).save(testSuite, (err: Error | null, identifier: number) => {
+    (new TestSuiteSchemeFacade()).getById(id, (err: Error | null, testSuiteScheme: TestSuiteScheme | null) => {
         if (err) {
             res.status(500).send(err.message);
+        } else if (testSuiteScheme === null) {
+            res.sendStatus(404);
         } else {
-            res.status(201).send(identifier + '', );
+            const testSuite: TestSuite = testSuiteScheme.getTestSuite();
+
+            (new TestSuiteFacade()).save(testSuite, (err: Error | null, identifier: number) => {
+                if (err) {
+                    res.status(500).send(err.message);
+                } else {
+                    testSuite.execute();
+                    res.status(201).send(identifier + '', );
+                }
+            });
         }
     });
 });

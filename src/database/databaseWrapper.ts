@@ -8,39 +8,81 @@ class DatabaseWrapper {
 
     private createNewDbFile(): Promise<void> {
         fs.openSync(this.dbPath, 'w');
-
-        const createTestSuites = `
-            CREATE TABLE testsuites (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL UNIQUE
-            );
-        `;
-        const createTests = `
-            CREATE TABLE tests (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                testsuitesId INTEGER,
-                testType TEXT NOT NULL,
-                params TEXT NOT NULL,
-                FOREIGN KEY(testsuitesId) REFERENCES testsuites(id)
-            );
-        `;
         const db: Database = this.getDatabase();
 
-        return new Promise((resolve, reject) => {
-            db.run(createTestSuites, (err: Error) => {
+        return new Promise<void>((resolve, reject) => {
+            // Create testsuiteschemes table.
+            const sql = `
+                CREATE TABLE testsuiteschemes (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL UNIQUE
+                );
+            `;
+            db.run(sql, (err: Error) => {
                 if (err) {
                     reject(err);
                 } else {
-                    db.run(createTests, (err: Error) => {
-                        if (err) {
-                            reject(err);
-                        } else {
-                            resolve();
-                        }
-                    });
+                    resolve();
                 }
-            })
-        })
+            });
+        }).then(() => {
+            return new Promise<void>((resolve, reject) => {
+                // Create testschemes table.
+                const sql = `
+                    CREATE TABLE testschemes (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        testsuiteschemeId INTEGER,
+                        testType TEXT NOT NULL,
+                        parameters TEXT NOT NULL,
+                        FOREIGN KEY(testsuiteschemeId) REFERENCES testsuiteschemes(id)
+                    );
+                `;
+                db.run(sql, (err: Error) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve();
+                    }
+                });
+            });
+        }).then(() => {
+            return new Promise<void>((resolve, reject) => {
+                // Create testsuites table.
+                const sql = `
+                    CREATE TABLE testsuites (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        name TEXT NOT NULL
+                    );
+                `;
+                db.run(sql, (err: Error) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve();
+                    }
+                });
+            });
+        }).then(() => {
+            return new Promise<void>((resolve, reject) => {
+                // Create tests table.
+                const sql = `
+                    CREATE TABLE tests (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        testsuiteId INTEGER,
+                        testType TEXT NOT NULL,
+                        parameters TEXT NOT NULL,
+                        FOREIGN KEY(testsuiteId) REFERENCES testsuites(id)
+                    );
+                `;
+                db.run(sql, (err: Error) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve();
+                    }
+                });
+            });
+        });
     }
 
     private getDatabase(): sqlite3.Database {

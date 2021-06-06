@@ -1,0 +1,4 @@
+interface WildcardSubscriptionTestParameters {
+}
+
+export default WildcardSubscriptionTestParameters;

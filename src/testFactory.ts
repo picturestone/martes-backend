@@ -1,7 +1,11 @@
-import AuthenticationTest from './models/tests/authenticationTest';
-import ConnectionTest from './models/tests/connectionTest';
-import Test from './models/tests/test';
-import WildcardSubscriptionTest from './models/tests/wildcardSubscriptionTest';
+import AuthenticationTest from './models/executable/authenticationTest';
+import ConnectionTest from './models/executable/connectionTest';
+import ExecutableTest from './models/executable/executableTest';
+import WildcardSubscriptionTest from './models/executable/wildcardSubscriptionTest';
+import AuthenticationTestScheme from './models/schemes/authenticationTestScheme';
+import ConnectionTestScheme from './models/schemes/connectionTestScheme';
+import TestScheme from './models/schemes/testScheme';
+import WildcardSubscriptionTestScheme from './models/schemes/wildcardSubscriptionTestScheme';
 
 class TestFactory {
     private static _instance: TestFactory;
@@ -9,20 +13,26 @@ class TestFactory {
     private constructor() {
     }
 
-    public getTest(type: String, params: {[key: string]: string|number}, id?: number): Test {
-        var test: Test | null = null;
+    // TODO once optional parameters are created maybe this should be checked here?
+    public getTestScheme(testType: string, params: any, id?: number): TestScheme<any> {
+        var test: TestScheme<{}> | null = null;
 
-        switch (type) {
-            case ConnectionTest.type:
-                test = ConnectionTest.getInstance(params, id);
+        switch (testType) {
+            case ConnectionTestScheme.testType:
+                const host: string = params.host;
+                const port: number = params.port;
+                if(!host || !port) {
+                    throw new Error('Missing parameters to create test of type ' + testType);
+                }
+                test = new ConnectionTestScheme({host, port}, id);
                 break;
         
-            case AuthenticationTest.type:
-                test = AuthenticationTest.getInstance(id);
+            case AuthenticationTestScheme.testType:
+                test = new AuthenticationTestScheme({}, id);
                 break;
             
-            case WildcardSubscriptionTest.type:
-                test = WildcardSubscriptionTest.getInstance(id);
+            case WildcardSubscriptionTestScheme.testType:
+                test = new WildcardSubscriptionTestScheme({}, id);
                 break;
 
             default:
@@ -30,18 +40,42 @@ class TestFactory {
         }
 
         if (!test) {
-            throw new Error('Test with type \'' + type +'\' not found.');
+            throw new Error('Test with type ' + testType +' not found.');
         }
 
         return test;
     }
 
-    public getTestTypes(): String[] {
-        return [
-            ConnectionTest.type,
-            AuthenticationTest.type,
-            WildcardSubscriptionTest.type
-        ];
+    public getExecutableTest(testType: string, params: any, id?: number): ExecutableTest<any> {
+        var test: ExecutableTest<{}> | null = null;
+
+        switch (testType) {
+            case ConnectionTest.testType:
+                const host: string = params.host;
+                const port: number = params.port;
+                if(!host || !port) {
+                    throw new Error('Missing parameters to create test of type ' + testType);
+                }
+                test = new ConnectionTest({host, port}, id);
+                break;
+        
+            case AuthenticationTest.testType:
+                test = new AuthenticationTest({}, id);
+                break;
+            
+            case WildcardSubscriptionTest.testType:
+                test = new WildcardSubscriptionTest({}, id);
+                break;
+
+            default:
+                break;
+        }
+
+        if (!test) {
+            throw new Error('Test with type ' + testType +' not found.');
+        }
+
+        return test;
     }
 
     public static getInstance(): TestFactory {

@@ -1,26 +1,16 @@
-import Test from "./test";
 import mqtt, { Client } from 'mqtt';
 import crypto from 'crypto';
+import ExecutableTest from './executableTest';
+import WildcardSubscriptionTestParameters from '../testparameters/wildcardSubscriptionTestParameters';
+import TestType from '../testtype';
 
-class WildcardSubscriptionTest extends Test {
-    public static readonly type: string = 'wildcardSubscription';
+class WildcardSubscriptionTest extends ExecutableTest<WildcardSubscriptionTestParameters> {
+    public static readonly testType: TestType = TestType.Connection;
 
-    private constructor(id?: number) {
-        super(id);
+    public get testType(): TestType {
+        return WildcardSubscriptionTest.testType;
     }
 
-    public static getInstance(id?: number): WildcardSubscriptionTest {
-        return new WildcardSubscriptionTest(id);
-    }
-
-    public get params(): {} {
-        throw new Error("Method not implemented.");
-    }
-
-    public get type(): string {
-        return WildcardSubscriptionTest.type;
-    }
-    
     execute(callback: (isSuccessful: boolean, message?: string) => any): void {
         var isWildcardSubscriptionSuccessful: boolean = false;
         const uuid: string = crypto.randomBytes(16).toString('base64');
