@@ -36,6 +36,7 @@ abstract class ExecutableTest<parametersType> {
     }
 
     public execute(callback: (err: Error | null) => void) {
+        // TODO add state for test and set it to running
         this.log('info', 'Starting ' + this.testType + ' with following parameters:');
         this.log('info',  JSON.stringify(this.parameters));
         this.executeTestScript((err: Error | null, isFinishedSuccessfuly?: boolean, failureReason?: string) => {
