@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "473f553d-8ae6-4518-bd22-298fc24f5361",
+		"name": "Martes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Testsuite Scheme",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"ConnectionTests2\",\n    \"tests\": [\n        {\n            \"testType\": \"connection\",\n            \"params\": {\n                \"host\": \"192.168.1.50\",\n                \"port\": 1884\n            }\n        },\n        {\n            \"testType\": \"connection\",\n            \"params\": {\n                \"host\": \"192.168.1.51\",\n                \"port\": 3000\n            }\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7000/testsuiteschemes",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"testsuiteschemes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Executable Testsuite from Testsuite Scheme by ID",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7000/testsuites/1",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"testsuites",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show Testsuite Scheme",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:7000/testsuiteschemes/1",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"testsuiteschemes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show Executable Testsuite",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:7000/testsuites/1",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"testsuites",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
