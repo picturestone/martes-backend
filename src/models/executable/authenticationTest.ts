@@ -10,7 +10,7 @@ class AuthenticationTest extends ExecutableTest<AuthenticationTestParameters> {
         return AuthenticationTest.testType;
     }
 
-    execute(callback: (isSuccessful: boolean, message?: string) => any): void {
+    public executeTestScript(callback: (err: Error | null, isFinishedSuccessfuly?: boolean, failureReason?: string) => void): void {
         var isUnauthenticatedConnection: boolean = false;
 
         const unauthenticatedClient: Client = mqtt.connect(null, {

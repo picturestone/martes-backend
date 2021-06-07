@@ -3,6 +3,7 @@ import DatabaseWrapper from './databaseWrapper';
 import TestFactory from '../testFactory';
 import TestSuite from '../models/executable/testSuite';
 import Executable from '../models/executable/executableTest';
+import ExecutableTest from '../models/executable/executableTest';
 
 class TestSuiteFacade {
     public getById(id: number, callback: (err: Error | null, testSuite: TestSuite | null) => void) {
@@ -15,11 +16,13 @@ class TestSuiteFacade {
                     if (rows.length === 0) {
                         callback(null, null);
                     } else {
-                        const testSuite = new TestSuite(rows[0].name, rows[0].testsuiteschemeId);
+                        const testSuite = new TestSuite(rows[0].name, rows[0].testsuiteId);
                         const tests: Executable<any>[] = [];
                         const testFactory: TestFactory = TestFactory.getInstance();
                         rows.forEach((row) => {
-                            tests.push(testFactory.getExecutableTest(row.testType, JSON.parse(row.parameters), row.id));
+                            const executableTest: ExecutableTest<any> = testFactory.getExecutableTest(row.testType, JSON.parse(row.parameters), row.id);
+                            executableTest.logMessages = JSON.parse(row.logMessages);
+                            tests.push(executableTest);
                         });
                         testSuite.tests = tests;
                         callback(null, testSuite);
@@ -46,10 +49,10 @@ class TestSuiteFacade {
                     return handleError(err);
                 } else {
                     // Insert all tests. Done with promises so callback is only called if all inserts are successful.
-                    sql = `INSERT INTO tests(testsuiteId, testType, parameters) VALUES(?, ?, ?)`;
+                    sql = `INSERT INTO tests(testsuiteId, testType, parameters, logMessages) VALUES(?, ?, ?, ?)`;
                     const queries = testSuite.tests.map((test) => {
                         return new Promise<void>((resolve, reject) => {
-                                db.run(sql, [this.lastID, test.testType, JSON.stringify(test.parameters)], (err: Error) => {
+                                db.run(sql, [this.lastID, test.testType, JSON.stringify(test.parameters), JSON.stringify(test.logMessages)], (err: Error) => {
                                     if (err) {
                                         reject(err);
                                     } else {

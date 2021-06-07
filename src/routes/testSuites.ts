@@ -42,8 +42,14 @@ router.post('/:id', (req, res) => {
                 if (err) {
                     res.status(500).send(err.message);
                 } else {
-                    testSuite.execute();
-                    res.status(201).send(identifier + '', );
+                    (new TestSuiteFacade()).getById(identifier, (err: Error | null, testSuite: TestSuite | null) => {
+                        if (err) {
+                            res.status(500).send(err.message);
+                        } else {
+                            testSuite?.execute();
+                            res.status(201).send(identifier + '', );
+                        }
+                    });
                 }
             });
         }

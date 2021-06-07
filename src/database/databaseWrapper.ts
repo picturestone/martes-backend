@@ -31,7 +31,7 @@ class DatabaseWrapper {
                 const sql = `
                     CREATE TABLE testschemes (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        testsuiteschemeId INTEGER,
+                        testsuiteschemeId INTEGER NOT NULL,
                         testType TEXT NOT NULL,
                         parameters TEXT NOT NULL,
                         FOREIGN KEY(testsuiteschemeId) REFERENCES testsuiteschemes(id)
@@ -68,9 +68,10 @@ class DatabaseWrapper {
                 const sql = `
                     CREATE TABLE tests (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        testsuiteId INTEGER,
+                        testsuiteId INTEGER NOT NULL,
                         testType TEXT NOT NULL,
                         parameters TEXT NOT NULL,
+                        logMessages TEXT,
                         FOREIGN KEY(testsuiteId) REFERENCES testsuites(id)
                     );
                 `;

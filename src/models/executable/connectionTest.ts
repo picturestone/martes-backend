@@ -10,9 +10,10 @@ class ConnectionTest extends ExecutableTest<ConnectionTestParameters> {
         return ConnectionTest.testType;
     }
 
-    public execute(callback: (isSuccessful: boolean, message?: string) => any): void {
+    public executeTestScript(callback: (err: Error | null, isFinishedSuccessfuly?: boolean, failureReason?: string) => void): void {
         var isServerRunning: boolean = false;
 
+        this.log('info', 'Opening connection...');
         const client: Client = mqtt.connect(null, {
             host: this.parameters.host,
             port: this.parameters.port,
@@ -21,16 +22,18 @@ class ConnectionTest extends ExecutableTest<ConnectionTestParameters> {
         });
 
         client.on('packetreceive', () => {
-            // Packet is received, so the server must be running. Set marker and close connection.
+            // Packet is received, so the connection can be established. Set marker and close connection.
+            this.log('info', 'Connection opened');
             isServerRunning = true;
             client.end(true);
-            callback(true);
+            callback(null, true);
         });
 
         client.on('close', () => {
             // If connection is closed by timeout, then isServerRunning is still false so the connection failed.
             if (!isServerRunning) {
-                callback(false, 'Connection failed');
+                this.log('info', 'Connection timed out');
+                callback(null, false, 'Connection failed - check if the server is running and the parameters are correct');
             }
         });
     }
