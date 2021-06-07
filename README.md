@@ -201,3 +201,25 @@ For a demonstration do the following:
 4. Add the event `log` via the `listen to a new event...` input.
 5. Execute the `Add new test suite scheme` route (not necessary if a scheme is already existant).
 6. Execute the `Create executable test suite from test suite scheme` route with the desired scheme.
+
+TODO describe that socketio logs also have test id.
+
+A log message is a JSON containing the following:
+
+```
+{
+    "time": <string - time where the event was created>,
+    "status": <string - one of the following values: 'info', 'failed', 'successful', 'error'>,
+    "message": <string - log message>
+}
+```
+
+Example:
+
+```
+{
+    "time": "2021-06-06T17:02:45.388Z",
+    "status": "info",
+    "message": "Opening connection..."
+}
+```
