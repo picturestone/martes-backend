@@ -1,6 +1,7 @@
-import DatabaseLogger from "../../logging/DatabaseLogger";
+import DatabaseLogger from "../../logging/databaseLogger";
 import Logger from "../../logging/logger";
 import LogMessage from "../../logging/logMessage";
+import SocketLogger from "../../logging/socketLogger";
 import TestType from "../testtype";
 
 abstract class ExecutableTest<parametersType> {
@@ -14,7 +15,8 @@ abstract class ExecutableTest<parametersType> {
         this.parameters = parameters;
         this.logMessages = [];
         this.loggers = [
-            new DatabaseLogger(this)
+            new DatabaseLogger(this),
+            new SocketLogger(this)
         ];
     }
 
