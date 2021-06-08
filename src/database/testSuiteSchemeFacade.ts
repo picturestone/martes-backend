@@ -29,6 +29,95 @@ class TestSuiteSchemeFacade {
         });
     }
 
+    public update(id: number, testSuiteScheme: TestSuiteScheme, callback: (err: Error | null, identifier: number | null) => void): void {
+        // Check if entry with id exists.
+        this.getById(id, (err: Error | null, oldTestSuiteScheme: TestSuiteScheme | null) => {
+            if (err) {
+                if (err) {
+                    callback(err, null);
+                } else if (oldTestSuiteScheme === null) {
+                    callback(null, null);
+                } else {
+                    DatabaseWrapper.getDatabase().then((db) => {
+                        const queries: Promise<void>[] = [];
+
+                        db.run('BEGIN');
+
+                        // Insert all tests. Done with promises so callback is only called if all inserts are successful.
+                        const updateTestSuiteScheme = `UPDATE testsuiteschemes SET name = ? WHERE id = ?`;
+                        queries.push(new Promise<void>((resolve, reject) => {
+                            db.run(updateTestSuiteScheme, [testSuiteScheme.name, id], (err: Error) => {
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    resolve();
+                                }
+                            });
+                        }));
+
+                        testSuiteScheme.testSchemes.forEach((newTestScheme) => {
+                            queries.push(new Promise<void>((resolve, reject) => {
+                                if (newTestScheme.id) {
+                                    const indexInOldTestSuiteScheme = oldTestSuiteScheme.testSchemes.findIndex((oldTestScheme) => {
+                                        return oldTestScheme.id === newTestScheme.id;
+                                    });
+                                    if (-1 < indexInOldTestSuiteScheme) {
+                                        // Test scheme found in old test schemes, so it must be updated. Remove the old scheme so its not removed afterwards.
+                                        oldTestSuiteScheme.testSchemes.splice(indexInOldTestSuiteScheme, 1);
+                                        const updateTestScheme: string = `UPDATE testschemes SET testType = ?, parameters = ? WHERE id = ?`;
+                                        db.run(updateTestScheme, [newTestScheme.testType, JSON.stringify(newTestScheme.parameters), newTestScheme.id], (err: Error) => {
+                                            if (err) {
+                                                reject(err);
+                                            } else {
+                                                resolve();
+                                            }
+                                        });
+                                    } else {
+                                        // New test scheme has an ID that is not found in the old test schemes. The caller probably set the ID themselves, so this is an error.
+                                        reject(new Error(`Test Scheme with id ${newTestScheme.id} is not found in test suite scheme with id ${id}`));
+                                    }
+                                } else {
+                                    // Test scheme does not have an id yet, so add it to the database.
+                                    const addTestScheme = `INSERT INTO testschemes(testsuiteschemeId, testType, parameters) VALUES(?, ?, ?)`;
+                                    db.run(addTestScheme, [testSuiteScheme.id, newTestScheme.testType, JSON.stringify(newTestScheme.parameters)], (err: Error) => {
+                                        if (err) {
+                                            reject(err);
+                                        } else {
+                                            resolve();
+                                        }
+                                    });
+                                }
+                            }));
+                        });
+
+                        // Remove all test schemes of the old test suite scheme that are not in the new test suite scheme.
+                        oldTestSuiteScheme.testSchemes.forEach((oldTestScheme) => {
+                            queries.push(new Promise<void>((resolve, reject) => {
+                                const deleteTestScheme = `DELETE FROM testschemes WHERE id = ?`;
+                                db.run(deleteTestScheme, [oldTestScheme.id], (err: Error) => {
+                                    if (err) {
+                                        reject(err);
+                                    } else {
+                                        resolve();
+                                    }
+                                });
+                            }));
+                        });
+                        
+                        // After all queries execute, commit the transaction.
+                        Promise.all(queries).then(() => {
+                            db.run('COMMIT');
+                            callback(null, id);
+                        }, (err) => {
+                            db.run('ROLLBACK');
+                            callback(err, null);
+                        });
+                    });
+                }
+            }
+        });
+    }
+
     public save(testSuiteScheme: TestSuiteScheme, callback: (err: Error | null, identifier: number) => void) {
         DatabaseWrapper.getDatabase().then((db: Database) => {
             const handleError = (err: Error) => {
@@ -49,14 +138,14 @@ class TestSuiteSchemeFacade {
                     sql = `INSERT INTO testschemes(testsuiteschemeId, testType, parameters) VALUES(?, ?, ?)`;
                     const queries = testSuiteScheme.testSchemes.map((testScheme) => {
                         return new Promise<void>((resolve, reject) => {
-                                db.run(sql, [this.lastID, testScheme.testType, JSON.stringify(testScheme.parameters)], (err: Error) => {
-                                    if (err) {
-                                        reject(err);
-                                    } else {
-                                        resolve();
-                                    }
-                                });
+                            db.run(sql, [this.lastID, testScheme.testType, JSON.stringify(testScheme.parameters)], (err: Error) => {
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    resolve();
+                                }
                             });
+                        });
                     });
                     Promise.all(queries).then(() => {
                         db.run('COMMIT');
