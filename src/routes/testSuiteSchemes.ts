@@ -28,7 +28,7 @@ router.post('/', (req, res) => {
     const testSuiteScheme: TestSuiteScheme = new TestSuiteScheme(req.body.name);
 
     try {
-        req.body.tests.forEach((testData: { testType: string; params: any; }) => {
+        req.body.testSchemes.forEach((testData: { testType: string; params: any; }) => {
             const testScheme: TestScheme<any> = testFactory.getTestScheme(testData.testType, testData.params);
             testSuiteScheme.testSchemes.push(testScheme);
         });
