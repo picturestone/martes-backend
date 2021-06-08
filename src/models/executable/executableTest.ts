@@ -9,11 +9,13 @@ abstract class ExecutableTest<parametersType> {
     public parameters: Readonly<parametersType>;
     public logMessages: LogMessage[];
     private loggers: Logger[];
+    private nextLogMessageId: number;
 
     constructor(parameters: parametersType, id?: number) {
         this.id = id;
         this.parameters = parameters;
         this.logMessages = [];
+        this.nextLogMessageId = 1;
         this.loggers = [
             new DatabaseLogger(this),
             new SocketLogger(this)
@@ -33,8 +35,9 @@ abstract class ExecutableTest<parametersType> {
     protected log(status: 'info' | 'failed' | 'successful' | 'error', message: string) {
         const now: Date = new Date();
         this.loggers.forEach((logger: Logger) => {
-            logger.log({time: now, status, message});
+            logger.log({id: this.nextLogMessageId, time: now, status, message});
         });
+        this.nextLogMessageId++;
     }
 
     public execute(callback: (err: Error | null) => void) {
