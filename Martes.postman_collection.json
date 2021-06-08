@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"ConnectionTests2\",\n    \"tests\": [\n        {\n            \"testType\": \"connection\",\n            \"params\": {\n                \"host\": \"192.168.1.50\",\n                \"port\": 1884\n            }\n        },\n        {\n            \"testType\": \"connection\",\n            \"params\": {\n                \"host\": \"192.168.1.51\",\n                \"port\": 3000\n            }\n        }\n    ]\n}",
+					"raw": "{\n    \"name\": \"ConnectionTests2\",\n    \"testSchemes\": [\n        {\n            \"testType\": \"connection\",\n            \"params\": {\n                \"host\": \"192.168.1.50\",\n                \"port\": 1884\n            }\n        },\n        {\n            \"testType\": \"connection\",\n            \"params\": {\n                \"host\": \"192.168.1.51\",\n                \"port\": 3000\n            }\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
