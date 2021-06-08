@@ -188,7 +188,7 @@ Returns: Test suite data, e.g.:
 Log events from the tests are handled in 2 ways:
 
 - Persisted in the database together with the test from which the event was triggered
-- Emited via socket.io on the path /socket-io
+- Emited via socket.io on the path `/socket-io`. The objects received here have the testId parameter so it is clear to which test a log message belongs.
 
 The persisted events are sent in the response when accessing the "Get test suite" route.
 
@@ -202,12 +202,11 @@ For a demonstration do the following:
 5. Execute the `Add new test suite scheme` route (not necessary if a scheme is already existant).
 6. Execute the `Create executable test suite from test suite scheme` route with the desired scheme.
 
-TODO describe that socketio logs also have test id.
-
 A log message is a JSON containing the following:
 
 ```
 {
+    "id": <number - unique id per test>,
     "time": <string - time where the event was created>,
     "status": <string - one of the following values: 'info', 'failed', 'successful', 'error'>,
     "message": <string - log message>
@@ -218,6 +217,7 @@ Example:
 
 ```
 {
+    "id": 1,
     "time": "2021-06-06T17:02:45.388Z",
     "status": "info",
     "message": "Opening connection..."
