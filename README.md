@@ -5,9 +5,11 @@ This project provides the backend for the martes project. Martes is a tool to te
 ## Installation
 
 1. Clone the git repo: `git clone git@github.com:picturestone/martes-backend.git'
-2. Switch into the directory: `cd martes-backend``
-3. Install libraries: `npm install`
-4. Start test server: `npm run dev`
+2. Switch into the directory: `cd martes-backend`
+3. Copy the .env.example file and call it .env: `cp .env.example .env`
+4. Change the .env file to fit your needs
+5. Install libraries: `npm install`
+6. Start test server: `npm run dev`
 
 TODO add build instructions and note about moving files to web server.
 

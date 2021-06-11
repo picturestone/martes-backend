@@ -23,6 +23,38 @@ router.get('/:id', (req, res) => {
     });
 });
 
+router.put('/:id', (req, res) => {
+    const id: number = Number(req.params.id);
+    if (id === NaN) {
+        res.status(400).send('Id must be a number');
+        return;
+    }
+
+    const testFactory: TestFactory = TestFactory.getInstance();
+    const testSuiteScheme: TestSuiteScheme = new TestSuiteScheme(req.body.name);
+    // TODO add ID of test scheme to test scheme so updates run correctly
+    try {
+        req.body.tests.forEach((testData: { testType: string; params: any; }) => {
+            const testScheme: TestScheme<any> = testFactory.getTestScheme(testData.testType, testData.params);
+            testSuiteScheme.testSchemes.push(testScheme);
+        });
+    } catch (error) {
+        res.status(400).send(error.message);
+        return;
+    }
+
+    // TODO add ID to call
+    (new TestSuiteSchemeFacade()).update(testSuiteScheme, (err: Error | null, identifier: number | null) => {
+        if (err) {
+            res.status(500).send(err.message);
+        } else if (identifier === null) {
+            res.sendStatus(404);
+        } else {
+            res.status(200).send(identifier + '', );
+        }
+    });
+});
+
 router.post('/', (req, res) => {
     const testFactory: TestFactory = TestFactory.getInstance();
     const testSuiteScheme: TestSuiteScheme = new TestSuiteScheme(req.body.name);
