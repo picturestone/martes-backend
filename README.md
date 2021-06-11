@@ -88,6 +88,28 @@ Returns: Test suite scheme data, e.g.:
 }
 ```
 
+### Get all test suite schemes
+
+GET `localhost:{PORT}/testsuiteschemes`
+e.g.: `localhost:7000/testsuiteschemes`
+
+Returns: All test suite scheme ids and names in an array (note: testSchemes array is always empty), e.g.:
+
+```
+[
+    {
+        "name": "ConnectionTests2",
+        "id": 1,
+        "testSchemes": []
+    },
+    {
+        "name": "ConnectionTests1",
+        "id": 2,
+        "testSchemes": []
+    }
+]
+```
+
 ### Create executable test suite from test suite scheme
 
 Use this route to create an executable test suite from a test suite scheme. The execution is automatically started.
@@ -181,6 +203,33 @@ Returns: Test suite data, e.g.:
         }
     ]
 }
+```
+
+### Get all test suites
+
+GET `localhost:{PORT}/testsuites`
+e.g.: `localhost:7000/testsuites`
+
+Returns: All test suites ids and names in an array (note: tests array is always empty), e.g.:
+
+```
+[
+    {
+        "name": "ConnectionTests2",
+        "id": 1,
+        "tests": []
+    },
+    {
+        "name": "ConnectionTests2",
+        "id": 2,
+        "tests": []
+    },
+    {
+        "name": "ConnectionTests1",
+        "id": 3,
+        "tests": []
+    }
+]
 ```
 
 ## Logging

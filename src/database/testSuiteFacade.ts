@@ -6,6 +6,23 @@ import Executable from '../models/executable/executableTest';
 import ExecutableTest from '../models/executable/executableTest';
 
 class TestSuiteFacade {
+    public getAll(callback: (err: Error | null, testSuites: TestSuite[] | null) => void) {
+        DatabaseWrapper.getDatabase().then((db: Database) => {
+            const sql = `SELECT * FROM testsuites`;
+            db.all(sql, (err: Error, rows: any[]) => {
+                if (err) {
+                    callback(err, null);
+                } else {
+                    const testSuites: TestSuite[] = [];
+                    rows.forEach((row) => {
+                        testSuites.push(new TestSuite(row.name, row.id));
+                    });
+                    callback(null, testSuites);
+                }
+            });
+        });
+    }
+
     public getById(id: number, callback: (err: Error | null, testSuite: TestSuite | null) => void) {
         DatabaseWrapper.getDatabase().then((db: Database) => {
             const sql = `SELECT * FROM testsuites as ts LEFT JOIN tests as t ON ts.id = t.testsuiteId WHERE ts.id = ?`;

@@ -5,6 +5,23 @@ import TestSuiteScheme from "../models/schemes/testSuiteScheme";
 import TestFactory from '../testFactory';
 
 class TestSuiteSchemeFacade {
+    public getAll(callback: (err: Error | null, testSuiteSchemes: TestSuiteScheme[] | null) => void) {
+        DatabaseWrapper.getDatabase().then((db: Database) => {
+            const sql = `SELECT * FROM testsuiteschemes`;
+            db.all(sql, (err: Error, rows: any[]) => {
+                if (err) {
+                    callback(err, null);
+                } else {
+                    const testSuiteSchemes: TestSuiteScheme[] = [];
+                    rows.forEach((row) => {
+                        testSuiteSchemes.push(new TestSuiteScheme(row.name, row.id));
+                    });
+                    callback(null, testSuiteSchemes);
+                }
+            });
+        });
+    }
+
     public getById(id: number, callback: (err: Error | null, testSuiteScheme: TestSuiteScheme | null) => void) {
         DatabaseWrapper.getDatabase().then((db: Database) => {
             const sql = `SELECT * FROM testsuiteschemes as tss LEFT JOIN testschemes as ts ON tss.id = ts.testsuiteschemeId WHERE tss.id = ?`;

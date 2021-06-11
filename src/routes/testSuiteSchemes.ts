@@ -6,6 +6,16 @@ import TestFactory from '../testFactory';
 
 const router: Router = express.Router();
 
+router.get('/', (req, res) => {
+    (new TestSuiteSchemeFacade()).getAll((err: Error | null, testSuiteSchemes: TestSuiteScheme[] | null) => {
+        if (err) {
+            res.status(500).send(err.message);
+        } else {
+            res.json(testSuiteSchemes);
+        }
+    });
+});
+
 router.get('/:id', (req, res) => {
     const id: number = Number(req.params.id);
     if (id === NaN) {
