@@ -43,7 +43,7 @@ router.put('/:id', (req, res) => {
     const testFactory: TestFactory = TestFactory.getInstance();
     const testSuiteScheme: TestSuiteScheme = new TestSuiteScheme(req.body.name, id);
     try {
-        req.body.tests.forEach((testData: { testType: string; params: any; id?: number; }) => {
+        req.body.testSchemes.forEach((testData: { testType: string; params: any; id?: number; }) => {
             const testScheme: TestScheme<any> = testFactory.getTestScheme(testData.testType, testData.params, testData.id);
             testSuiteScheme.testSchemes.push(testScheme);
         });
