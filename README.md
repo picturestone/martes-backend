@@ -157,8 +157,7 @@ In this example 4 requests are made:
 3. The new test suite scheme gets updated with different data
 4. The data of the updated test suite scheme is inspected
 
-*Request 1*
-Sending `POST` to `localhost:7000/testsuiteschemes` with the follwing body:
+**Request 1:** Sending `POST` to `localhost:7000/testsuiteschemes` with the follwing body:
 ```
 {
     "name": "ConnectionTests2",
@@ -182,8 +181,7 @@ Sending `POST` to `localhost:7000/testsuiteschemes` with the follwing body:
 ```
 Returns: `1`
 
-*Request 2*
-Then sending `GET` to `localhost:7000/testsuiteschemes/1`
+**Request 2:** Sending `GET` to `localhost:7000/testsuiteschemes/1`
 Returns: 
 ```
 {
@@ -210,8 +208,7 @@ Returns:
 }
 ```
 
-*Request 3*
-Then sending `PUT` to `localhost:7000/testsuiteschemes/1` with the following body:
+**Request 3:** Sending `PUT` to `localhost:7000/testsuiteschemes/1` with the following body:
 ```
 {
     "name": "ConnectionTestsUpdated",
@@ -236,8 +233,7 @@ Then sending `PUT` to `localhost:7000/testsuiteschemes/1` with the following bod
 ```
 Returns: `1`
 
-*Request 4*
-Then sending `GET` to `localhost:7000/testsuiteschemes/1`
+**Request 4:** Sending `GET` to `localhost:7000/testsuiteschemes/1`
 Returns: 
 ```
 {
