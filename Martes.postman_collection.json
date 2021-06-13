@@ -33,6 +33,34 @@
 			"response": []
 		},
 		{
+			"name": "Create Testsuite Scheme Copy",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"ConnectionTestsUpdated\",\n    \"testSchemes\": [\n        {\n            \"id\": 1,\n            \"testType\": \"connection\",\n            \"params\": {\n                \"host\": \"192.168.0.25\",\n                \"port\": 1884\n            }\n        },\n        {\n            \"testType\": \"connection\",\n            \"params\": {\n                \"host\": \"10.0.0.1\",\n                \"port\": 3000\n            }\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7000/testsuiteschemes/1",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"testsuiteschemes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Create Executable Testsuite from Testsuite Scheme by ID",
 			"request": {
 				"method": "POST",

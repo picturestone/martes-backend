@@ -5,9 +5,11 @@ This project provides the backend for the martes project. Martes is a tool to te
 ## Installation
 
 1. Clone the git repo: `git clone git@github.com:picturestone/martes-backend.git'
-2. Switch into the directory: `cd martes-backend``
-3. Install libraries: `npm install`
-4. Start test server: `npm run dev`
+2. Switch into the directory: `cd martes-backend`
+3. Copy the .env.example file and call it .env: `cp .env.example .env`
+4. Change the .env file to fit your needs
+5. Install libraries: `npm install`
+6. Start test server: `npm run dev`
 
 TODO add build instructions and note about moving files to web server.
 
@@ -109,6 +111,158 @@ Returns: All test suite scheme ids and names in an array (note: testSchemes arra
     }
 ]
 ```
+
+### Edit existing test suite scheme
+
+PUT `localhost:{PORT}/testsuiteschemes/{TEST SUITE SCHEME ID}`
+e.g.: `localhost:7000/testsuiteschemes/1`
+
+Data is updated in the following way:
+- The testsuite scheme with the ID from the URL gets the updated name and all test schemes sent in the body are updated
+- If a test scheme is sent with an ID, the test scheme with the sent ID gets updated
+- If a test scheme is sent without an ID, the test scheme is inserted into the database as a new test scheme for the test suite scheme
+- If the test suite scheme has any test schemes for which a test scheme with the corresponding ID is not sent, the test scheme is deleted
+
+Example body: 
+```
+{
+    "name": "ConnectionTestsUpdated",
+    "testSchemes": [
+        {
+            "id": 1,
+            "testType": "connection",
+            "params": {
+                "host": "192.168.0.25",
+                "port": 1884
+            }
+        },
+        {
+            "testType": "connection",
+            "params": {
+                "host": "10.0.0.1",
+                "port": 3000
+            }
+        }
+    ]
+}
+```
+
+Returns: ID of new test suite scheme
+
+#### Further explanation by example
+
+In this example 4 requests are made:
+1. A new test suite scheme is added
+2. The data of the new test suite scheme is inspected
+3. The new test suite scheme gets updated with different data
+4. The data of the updated test suite scheme is inspected
+
+**Request 1:** Sending `POST` to `localhost:7000/testsuiteschemes` with the follwing body:
+```
+{
+    "name": "ConnectionTests2",
+    "tests": [
+        {
+            "testType": "connection",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1884
+            }
+        },
+        {
+            "testType": "connection",
+            "params": {
+                "host": "192.168.1.51",
+                "port": 3000
+            }
+        }
+    ]
+}
+```
+Returns: `1`
+
+**Request 2:** Sending `GET` to `localhost:7000/testsuiteschemes/1` returns: 
+```
+{
+    "name": "ConnectionTests2",
+    "id": 1,
+    "testSchemes": [
+        {
+            "id": 1,
+            "testType": "connection",
+            "parameters": {
+                "host": "192.168.1.50",
+                "port": 1884
+            }
+        },
+        {
+            "id": 2,
+            "testType": "connection",
+            "parameters": {
+                "host": "192.168.1.51",
+                "port": 3000
+            }
+        }
+    ]
+}
+```
+
+**Request 3:** Sending `PUT` to `localhost:7000/testsuiteschemes/1` with the following body:
+```
+{
+    "name": "ConnectionTestsUpdated",
+    "testSchemes": [
+        {
+            "id": 1,
+            "testType": "connection",
+            "params": {
+                "host": "192.168.0.25",
+                "port": 1884
+            }
+        },
+        {
+            "testType": "connection",
+            "params": {
+                "host": "10.0.0.1",
+                "port": 3000
+            }
+        }
+    ]
+}
+```
+Returns: `1`
+
+**Request 4:** Sending `GET` to `localhost:7000/testsuiteschemes/1` returns: 
+```
+{
+    "name": "ConnectionTestsUpdated",
+    "id": 1,
+    "testSchemes": [
+        {
+            "id": 1,
+            "testType": "connection",
+            "parameters": {
+                "host": "192.168.0.25",
+                "port": 1884
+            }
+        },
+        {
+            "id": 3,
+            "testType": "connection",
+            "parameters": {
+                "host": "10.0.0.1",
+                "port": 3000
+            }
+        }
+    ]
+}
+```
+
+What happened?
+- The test scheme suite changed its name.
+- The test scheme with ID 1 is updated (because in put a test scheme with id 1 is sent).
+- A new test scheme got added (ID 3) because in put a test scheme without an id is sent.
+- The test scheme with ID 2 is removed (because in put no test scheme with id 2 is sent).
 
 ### Create executable test suite from test suite scheme
 
