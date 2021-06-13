@@ -181,8 +181,7 @@ In this example 4 requests are made:
 ```
 Returns: `1`
 
-**Request 2:** Sending `GET` to `localhost:7000/testsuiteschemes/1`
-Returns: 
+**Request 2:** Sending `GET` to `localhost:7000/testsuiteschemes/1` returns: 
 ```
 {
     "name": "ConnectionTests2",
@@ -233,8 +232,7 @@ Returns:
 ```
 Returns: `1`
 
-**Request 4:** Sending `GET` to `localhost:7000/testsuiteschemes/1`
-Returns: 
+**Request 4:** Sending `GET` to `localhost:7000/testsuiteschemes/1` returns: 
 ```
 {
     "name": "ConnectionTestsUpdated",
