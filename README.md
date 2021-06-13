@@ -2,23 +2,31 @@
 
 This project provides the backend for the martes project. Martes is a tool to test the security configuration of MQTT Servers. The user can configure tests which should be run against the desired MQTT Server. This way, the configuration of for example access control and authorization can be tested.
 
-## Installation
+## Installation - Production
 
 1. Clone the git repo: `git clone git@github.com:picturestone/martes-backend.git'
 2. Switch into the directory: `cd martes-backend`
 3. Copy the .env.example file and call it .env: `cp .env.example .env`
 4. Change the .env file to fit your needs
-5. Install libraries: `npm install`
-6. Start test server: `npm run dev`
+5. Build the backend for production: `npm run build`
+6. Start backend: `npm run start`
 
-TODO add build instructions and note about moving files to web server.
+## Installation - Development
+
+1. Clone the git repo: `git clone git@github.com:picturestone/martes-backend.git'
+2. Switch into the directory: `cd martes-backend`
+3. Copy the .env.example file and call it .env: `cp .env.example .env`
+4. Change the .env file to fit your needs
+5. Install dependencies: `npm install`
+6. Start the test server and watch for changes: `npm run dev`
 
 ## Development
 
 ### Important commands:
 
 `npm run dev` - Run node and watch for changes.
-`npm run build` - TODO building with this command does not work yet.
+`npm run build` - Build backend for production. Output is in `bin` folder.
+`npm run start` - Start the backend in production.
 
 ## Basic functionality
 

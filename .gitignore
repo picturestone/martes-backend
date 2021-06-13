@@ -105,3 +105,5 @@ dist
 
 # Project specific files
 database.db
+temp
+bin
