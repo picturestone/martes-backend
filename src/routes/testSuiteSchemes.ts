@@ -31,20 +31,18 @@ router.put('/:id', (req, res) => {
     }
 
     const testFactory: TestFactory = TestFactory.getInstance();
-    const testSuiteScheme: TestSuiteScheme = new TestSuiteScheme(req.body.name);
-    // TODO add ID of test scheme to test scheme so updates run correctly
+    const testSuiteScheme: TestSuiteScheme = new TestSuiteScheme(req.body.name, id);
     try {
-        req.body.tests.forEach((testData: { testType: string; params: any; }) => {
-            const testScheme: TestScheme<any> = testFactory.getTestScheme(testData.testType, testData.params);
+        req.body.tests.forEach((testData: { testType: string; params: any; id?: number; }) => {
+            const testScheme: TestScheme<any> = testFactory.getTestScheme(testData.testType, testData.params, testData.id);
             testSuiteScheme.testSchemes.push(testScheme);
         });
-    } catch (error) {
+    } catch (error: any) {
         res.status(400).send(error.message);
         return;
     }
 
-    // TODO add ID to call
-    (new TestSuiteSchemeFacade()).update(testSuiteScheme, (err: Error | null, identifier: number | null) => {
+    (new TestSuiteSchemeFacade()).update(id, testSuiteScheme, (err: Error | null, identifier: number | null) => {
         if (err) {
             res.status(500).send(err.message);
         } else if (identifier === null) {
@@ -64,7 +62,7 @@ router.post('/', (req, res) => {
             const testScheme: TestScheme<any> = testFactory.getTestScheme(testData.testType, testData.params);
             testSuiteScheme.testSchemes.push(testScheme);
         });
-    } catch (error) {
+    } catch (error: any) {
         res.status(400).send(error.message);
         return;
     }
