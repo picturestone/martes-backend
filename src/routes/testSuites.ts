@@ -6,6 +6,16 @@ import TestSuiteScheme from '../models/schemes/testSuiteScheme';
 
 const router: Router = express.Router();
 
+router.get('/', (req, res) => {
+    (new TestSuiteFacade()).getAll((err: Error | null, testSuites: TestSuite[] | null) => {
+        if (err) {
+            res.status(500).send(err.message);
+        } else {
+            res.json(testSuites);
+        }
+    });
+});
+
 router.get('/:id', (req, res) => {
     const id: number = Number(req.params.id);
     if (id === NaN) {

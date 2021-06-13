@@ -6,6 +6,16 @@ import TestFactory from '../testFactory';
 
 const router: Router = express.Router();
 
+router.get('/', (req, res) => {
+    (new TestSuiteSchemeFacade()).getAll((err: Error | null, testSuiteSchemes: TestSuiteScheme[] | null) => {
+        if (err) {
+            res.status(500).send(err.message);
+        } else {
+            res.json(testSuiteSchemes);
+        }
+    });
+});
+
 router.get('/:id', (req, res) => {
     const id: number = Number(req.params.id);
     if (id === NaN) {
@@ -58,7 +68,7 @@ router.post('/', (req, res) => {
     const testSuiteScheme: TestSuiteScheme = new TestSuiteScheme(req.body.name);
 
     try {
-        req.body.tests.forEach((testData: { testType: string; params: any; }) => {
+        req.body.testSchemes.forEach((testData: { testType: string; params: any; }) => {
             const testScheme: TestScheme<any> = testFactory.getTestScheme(testData.testType, testData.params);
             testSuiteScheme.testSchemes.push(testScheme);
         });

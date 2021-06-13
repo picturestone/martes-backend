@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"ConnectionTests2\",\n    \"tests\": [\n        {\n            \"testType\": \"connection\",\n            \"params\": {\n                \"host\": \"192.168.1.50\",\n                \"port\": 1884\n            }\n        },\n        {\n            \"testType\": \"connection\",\n            \"params\": {\n                \"host\": \"192.168.1.51\",\n                \"port\": 3000\n            }\n        }\n    ]\n}",
+					"raw": "{\n    \"name\": \"ConnectionTests2\",\n    \"testSchemes\": [\n        {\n            \"testType\": \"connection\",\n            \"params\": {\n                \"host\": \"192.168.1.50\",\n                \"port\": 1884\n            }\n        },\n        {\n            \"testType\": \"connection\",\n            \"params\": {\n                \"host\": \"192.168.1.51\",\n                \"port\": 3000\n            }\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -80,6 +80,24 @@
 			"response": []
 		},
 		{
+			"name": "Show Testsuite Schemes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:7000/testsuiteschemes",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"testsuiteschemes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Show Executable Testsuite",
 			"request": {
 				"method": "GET",
@@ -93,6 +111,24 @@
 					"path": [
 						"testsuites",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show Executable Testsuites",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:7000/testsuites",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"testsuites"
 					]
 				}
 			},

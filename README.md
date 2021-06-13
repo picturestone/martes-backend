@@ -90,6 +90,28 @@ Returns: Test suite scheme data, e.g.:
 }
 ```
 
+### Get all test suite schemes
+
+GET `localhost:{PORT}/testsuiteschemes`
+e.g.: `localhost:7000/testsuiteschemes`
+
+Returns: All test suite scheme ids and names in an array (note: testSchemes array is always empty), e.g.:
+
+```
+[
+    {
+        "name": "ConnectionTests2",
+        "id": 1,
+        "testSchemes": []
+    },
+    {
+        "name": "ConnectionTests1",
+        "id": 2,
+        "testSchemes": []
+    }
+]
+```
+
 ### Create executable test suite from test suite scheme
 
 Use this route to create an executable test suite from a test suite scheme. The execution is automatically started.
@@ -185,12 +207,39 @@ Returns: Test suite data, e.g.:
 }
 ```
 
+### Get all test suites
+
+GET `localhost:{PORT}/testsuites`
+e.g.: `localhost:7000/testsuites`
+
+Returns: All test suites ids and names in an array (note: tests array is always empty), e.g.:
+
+```
+[
+    {
+        "name": "ConnectionTests2",
+        "id": 1,
+        "tests": []
+    },
+    {
+        "name": "ConnectionTests2",
+        "id": 2,
+        "tests": []
+    },
+    {
+        "name": "ConnectionTests1",
+        "id": 3,
+        "tests": []
+    }
+]
+```
+
 ## Logging
 
 Log events from the tests are handled in 2 ways:
 
 - Persisted in the database together with the test from which the event was triggered
-- Emited via socket.io on the path /socket-io
+- Emited via socket.io on the path `/socket-io`. The objects received here have the testId parameter so it is clear to which test a log message belongs.
 
 The persisted events are sent in the response when accessing the "Get test suite" route.
 
@@ -204,12 +253,11 @@ For a demonstration do the following:
 5. Execute the `Add new test suite scheme` route (not necessary if a scheme is already existant).
 6. Execute the `Create executable test suite from test suite scheme` route with the desired scheme.
 
-TODO describe that socketio logs also have test id.
-
 A log message is a JSON containing the following:
 
 ```
 {
+    "id": <number - unique id per test>,
     "time": <string - time where the event was created>,
     "status": <string - one of the following values: 'info', 'failed', 'successful', 'error'>,
     "message": <string - log message>
@@ -220,6 +268,7 @@ Example:
 
 ```
 {
+    "id": 1,
     "time": "2021-06-06T17:02:45.388Z",
     "status": "info",
     "message": "Opening connection..."
