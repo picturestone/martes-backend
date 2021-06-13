@@ -24,7 +24,7 @@ class AuthenticationTest extends ExecutableTest<AuthenticationTestParameters> {
             isUnauthenticatedConnection = true;
             // Close connection.
             unauthenticatedClient.end(true);
-            callback(false, 'Connection is unauthenticated');
+            callback(null, false, 'Connection is unauthenticated');
         });
 
         unauthenticatedClient.on('close', () => {
@@ -40,13 +40,13 @@ class AuthenticationTest extends ExecutableTest<AuthenticationTestParameters> {
         
                 authenticatedClient.on('error', (error) => {
                     // Authentication with credentials failed - might be because of wrong credentials.
-                    callback(false, error.message);
+                    callback(null, false, error.message);
                 });
         
                 authenticatedClient.on('connect', () => {
                     // Authentication with credentials is successful.
                     authenticatedClient.end(true);
-                    callback(true);
+                    callback(null, true);
                 });
             }
         });
