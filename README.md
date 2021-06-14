@@ -16,8 +16,10 @@ This project provides the backend for the martes project. Martes is a tool to te
 
 1. Clone the git repo: `git clone git@github.com:picturestone/martes-backend.git`
 2. Switch into the directory: `cd martes-backend`
-3. Build the image: `docker build . -t martes-sec/martes-backend`
-4. Run the container: `docker run -p 7000:7000 --name=martes-backend martes-sec/martes-backend`
+3. Copy the .env.example file and call it .env: `cp .env.example .env`
+4. Change the .env file to fit your needs
+5. Build the image: `docker build . -t martes-sec/martes-backend`
+6. Run the container: `docker run -p 7000:7000 --name=martes-backend martes-sec/martes-backend`
 
 ## Installation - Development
 

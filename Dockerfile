@@ -1,9 +1,9 @@
-FROM node:16
+FROM node:16.3-alpine3.11
 WORKDIR /martes-backend
 COPY package*.json ./
 RUN npm install && npm install tsc -g
 COPY . .
-COPY .env.example .env
 RUN npm run build
+# TODO: find way to match port from .env with expose
 EXPOSE 7000
 CMD [ "npm", "run", "start" ]
