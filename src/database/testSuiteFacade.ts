@@ -64,11 +64,11 @@ class TestSuiteFacade {
                             callback(err, null);
                         } else {
                             const sql = `DELETE FROM testsuites WHERE id = ?`;
-                            db.run(sql, [id], function (this: RunResult, err: Error) {
+                            db.run(sql, [id], (err: Error) => {
                                 if (err) {
                                     callback(err, null);
                                 } else {
-                                    callback(null, this.lastID);
+                                    callback(null, id);
                                 }
                             });
                         }
