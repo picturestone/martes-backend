@@ -55,6 +55,7 @@ class TestSuiteSchemeFacade {
                 callback(null, null);
             } else {
                 DatabaseWrapper.getDatabase().then((db: Database) => {
+                    // Turn on foreign key support
                     db.run(`PRAGMA foreign_keys = ON`, (err: Error) => {
                         if (err) {
                             callback(err, null);
