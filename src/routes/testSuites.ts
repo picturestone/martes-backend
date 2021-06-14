@@ -33,6 +33,23 @@ router.get('/:id', (req, res) => {
     });
 });
 
+router.delete('/:id', (req, res) => {
+    const id: number = Number(req.params.id);
+    if (id === NaN) {
+        res.status(400).send('Id must be a number');
+        return;
+    }
+    (new TestSuiteFacade()).delete(id, (err: Error | null, identifier: number | null) => {
+        if (err) {
+            res.status(500).send(err.message);
+        } else if (identifier === null) {
+            res.sendStatus(404);
+        } else {
+            res.json(identifier);
+        }
+    });
+});
+
 // Creates a testSuite from the testSuiteScheme with the given ID and starts the testsuite.
 router.post('/:id', (req, res) => {
     const id: number = Number(req.params.id);
