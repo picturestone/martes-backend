@@ -33,6 +33,23 @@ router.get('/:id', (req, res) => {
     });
 });
 
+router.delete('/:id', (req, res) => {
+    const id: number = Number(req.params.id);
+    if (id === NaN) {
+        res.status(400).send('Id must be a number');
+        return;
+    }
+    (new TestSuiteSchemeFacade()).delete(id, (err: Error | null, identifier: number | null) => {
+        if (err) {
+            res.status(500).send(err.message);
+        } else if (identifier === null) {
+            res.sendStatus(404);
+        } else {
+            res.json(identifier);
+        }
+    });
+});
+
 router.put('/:id', (req, res) => {
     const id: number = Number(req.params.id);
     if (id === NaN) {
