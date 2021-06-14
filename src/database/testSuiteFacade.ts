@@ -58,12 +58,19 @@ class TestSuiteFacade {
                 callback(null, null);
             } else {
                 DatabaseWrapper.getDatabase().then((db: Database) => {
-                    const sql = `DELETE FROM testsuites WHERE id = ?`;
-                    db.run(sql, [id], function (this: RunResult, err: Error) {
+                    // Turn on foreign key support
+                    db.run(`PRAGMA foreign_keys = ON`, (err: Error) => {
                         if (err) {
                             callback(err, null);
                         } else {
-                            callback(null, this.lastID);
+                            const sql = `DELETE FROM testsuites WHERE id = ?`;
+                            db.run(sql, [id], function (this: RunResult, err: Error) {
+                                if (err) {
+                                    callback(err, null);
+                                } else {
+                                    callback(null, this.lastID);
+                                }
+                            });
                         }
                     });
                 });
