@@ -4,7 +4,7 @@ This project provides the backend for the martes project. Martes is a tool to te
 
 ## Installation - Production
 
-1. Clone the git repo: `git clone git@github.com:picturestone/martes-backend.git'
+1. Clone the git repo: `git clone git@github.com:picturestone/martes-backend.git`
 2. Switch into the directory: `cd martes-backend`
 3. Copy the .env.example file and call it .env: `cp .env.example .env`
 4. Change the .env file to fit your needs
@@ -13,7 +13,7 @@ This project provides the backend for the martes project. Martes is a tool to te
 
 ## Installation - Development
 
-1. Clone the git repo: `git clone git@github.com:picturestone/martes-backend.git'
+1. Clone the git repo: `git clone git@github.com:picturestone/martes-backend.git`
 2. Switch into the directory: `cd martes-backend`
 3. Copy the .env.example file and call it .env: `cp .env.example .env`
 4. Change the .env file to fit your needs
