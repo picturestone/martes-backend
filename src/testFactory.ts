@@ -1,8 +1,10 @@
 import AuthenticationTest from './models/executable/authenticationTest';
+import AuthorizationTest from './models/executable/authorizationTest';
 import ConnectionTest from './models/executable/connectionTest';
 import ExecutableTest from './models/executable/executableTest';
 import WildcardSubscriptionTest from './models/executable/wildcardSubscriptionTest';
 import AuthenticationTestScheme from './models/schemes/authenticationTestScheme';
+import AuthorizationTestScheme from './models/schemes/authorizationTestScheme';
 import ConnectionTestScheme from './models/schemes/connectionTestScheme';
 import TestScheme from './models/schemes/testScheme';
 import WildcardSubscriptionTestScheme from './models/schemes/wildcardSubscriptionTestScheme';
@@ -20,6 +22,7 @@ class TestFactory {
         let port: number;
         let username: string;
         let password: string;
+        let topic: string;
         switch (testType) {
             case ConnectionTestScheme.testType:
                 host = params.host;
@@ -39,6 +42,18 @@ class TestFactory {
                     throw new Error('Missing parameters to create test scheme of type ' + testType);
                 }
                 test = new AuthenticationTestScheme({host, port, username, password}, id);
+                break;
+
+            case AuthorizationTestScheme.testType:
+                host = params.host;
+                port = params.port;
+                username = params.username;
+                password = params.password;
+                topic = params.topic
+                if(!host || !port || !username || !password ||! topic) {
+                    throw new Error('Missing parameters to create test scheme of type ' + testType);
+                }
+                test = new AuthorizationTestScheme({host, port, username, password, topic}, id);
                 break;
             
             case WildcardSubscriptionTestScheme.testType:
@@ -67,6 +82,7 @@ class TestFactory {
         let port: number;
         let username: string;
         let password: string;
+        let topic: string;
         switch (testType) {
             case ConnectionTest.testType:
                 host = params.host;
@@ -86,6 +102,18 @@ class TestFactory {
                     throw new Error('Missing parameters to create test of type ' + testType);
                 }
                 test = new AuthenticationTest({host, port, username, password}, id);
+                break;
+
+            case AuthorizationTest.testType:
+                host = params.host;
+                port = params.port;
+                username = params.username;
+                password = params.password;
+                topic = params.topic
+                if(!host || !port || !username || !password ||! topic) {
+                    throw new Error('Missing parameters to create test scheme of type ' + testType);
+                }
+                test = new AuthorizationTest({host, port, username, password, topic}, id);
                 break;
             
             case WildcardSubscriptionTest.testType:

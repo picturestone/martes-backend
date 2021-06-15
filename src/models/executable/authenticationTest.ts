@@ -71,7 +71,7 @@ class AuthenticationTest extends ExecutableTest<AuthenticationTestParameters> {
 
                 authenticatedClient.on('close', () => {
                     if (isLoggingOnClose) {
-                        this.log('running', 'Connection without credentials closed');
+                        this.log('error', 'Connection without credentials closed');
                         authenticatedClient.end(true);
                         callback(null, false, 'Connecting with credentials failed - check if the server is running and the parameters are correct');
                     }

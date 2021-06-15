@@ -44,7 +44,7 @@ The backend provides means to add test suite schemes with related test schemes. 
 
 ## Available tests
 
-All available tests and their corresponding key can be found in `src/models/testtype.ts`. The parameters for each test can be found in `src/models/testparameters`.
+All available tests and their corresponding key can be found in `src/models/testtype.ts`. The parameters for each test can be found in `src/models/testparameters`. In general, tests assume that you want to restrict a right, so if the authorization test is able to send and receive something on the specified topic it failes because the test assumes that you want to make sure that noone can just send and receive on the topic.
 
 The following tests and required parameters are implemented:
 
@@ -53,7 +53,12 @@ The following tests and required parameters are implemented:
   - `port` - Port where server is listening
   - `username` - Username that should be chacked
   - `password` - Password to use
-- `authorization`
+- `authorization` - Checks if an anonymous user or the specific user can read or write on a specific topic
+  - `host` - IP Address where server is running
+  - `port` - Port where server is listening
+  - `username` - Username that should be chacked
+  - `password` - Password to use
+  - `topic` - The topic which should be testet for read or write rights. Make sure this is not sensitive topic, as some dummy data will be sent!
 - `connection` - Checks if a connection to a mosquitto server can be established
   - `host` - IP Address where server is running
   - `port` - Port where server is listening
