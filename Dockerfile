@@ -5,6 +5,5 @@ RUN npm install && npm install tsc -g
 COPY .env.docker .env
 COPY . .
 RUN npm run build
-# TODO: find way to match port from .env with expose
 EXPOSE 7000
 CMD [ "npm", "run", "start" ]
