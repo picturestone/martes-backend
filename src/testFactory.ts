@@ -59,10 +59,13 @@ class TestFactory {
             case WildcardSubscriptionTestScheme.testType:
                 host = params.host;
                 port = params.port;
+                username = params.username;
+                password = params.password;
+                topic = params.topic;
                 if(!host || !port) {
                     throw new Error('Missing parameters to create test scheme of type ' + testType);
                 }
-                test = new WildcardSubscriptionTestScheme({host, port}, id);
+                test = new WildcardSubscriptionTestScheme({host, port, username, password, topic}, id);
                 break;
 
             default:
@@ -109,8 +112,8 @@ class TestFactory {
                 port = params.port;
                 username = params.username;
                 password = params.password;
-                topic = params.topic
-                if(!host || !port || !username || !password ||! topic) {
+                topic = params.topic;
+                if(!host || !port || !username || !password || !topic) {
                     throw new Error('Missing parameters to create test scheme of type ' + testType);
                 }
                 test = new AuthorizationTest({host, port, username, password, topic}, id);
@@ -119,10 +122,13 @@ class TestFactory {
             case WildcardSubscriptionTest.testType:
                 host = params.host;
                 port = params.port;
-                if(!host || !port) {
+                username = params.username;
+                password = params.password;
+                topic = params.topic;
+                if(!host || !port || !username || !password || !topic) {
                     throw new Error('Missing parameters to create test of type ' + testType);
                 }
-                test = new WildcardSubscriptionTest({host, port}, id);
+                test = new WildcardSubscriptionTest({host, port, username, password, topic}, id);
                 break;
 
             default:

@@ -51,22 +51,23 @@ The following tests and required parameters are implemented:
 - `authentication` - Checks if a specific user can establish a connection to a mosquitto server
   - `host` - IP Address where server is running
   - `port` - Port where server is listening
-  - `username` - Username that should be chacked
+  - `username` - Username that should be checked
   - `password` - Password to use
 - `authorization` - Checks if an anonymous user or the specific user can read or write on a specific topic
   - `host` - IP Address where server is running
   - `port` - Port where server is listening
-  - `username` - Username that should be chacked
+  - `username` - Username that should be checked
   - `password` - Password to use
-  - `topic` - The topic which should be testet for read or write rights. Make sure this is not sensitive topic, as some dummy data will be sent!
+  - `topic` - The topic which should be testet for read and write rights. Make sure this is not a sensitive topic, as some dummy data will be sent!
 - `connection` - Checks if a connection to a mosquitto server can be established
   - `host` - IP Address where server is running
   - `port` - Port where server is listening
-- `dataEncryption`
-- `defaultPassword`
 - `wildcardSubscription` - Checks if subscriptions to the topic `#` are allowed
   - `host` - IP Address where server is running
   - `port` - Port where server is listening
+  - `username` - Username that should be checked
+  - `password` - Password to use
+  - `topic` - The topic which should be used to send data. Make sure this is not a sensitive topic, as some dummy data will be sent!
 
 ## API
 

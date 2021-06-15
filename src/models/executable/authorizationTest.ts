@@ -38,7 +38,7 @@ class AuthorizationTest extends ExecutableTest<AuthorizationTestParameters> {
                     this.log('error', error.message);
                     unauthenticatedClient.on('close', () => {
                         this.log('running', 'Connection without credentials closed');
-                        callback(null, false, 'An error occured when subscribing to the topic with the unauthenticated client');
+                        callback(null, false, `An error occured when subscribing to the topic ${this.parameters.topic} with the unauthenticated client`);
                     });
                     unauthenticatedClient.end(true);
 
@@ -47,7 +47,7 @@ class AuthorizationTest extends ExecutableTest<AuthorizationTestParameters> {
                     this.log('running', 'Listening for messages on connection without credentials');
                     //Register event to listen to received message.
                     unauthenticatedClient.on('message', () => {
-                        this.log('running', 'Message received on connection without credentials');
+                        this.log('running', `Message received from ${this.parameters.topic} on connection without credentials`);
                         // Data receiving is successful.
                         continueTest = false;
                         // Close connection.
@@ -69,11 +69,11 @@ class AuthorizationTest extends ExecutableTest<AuthorizationTestParameters> {
                             // Close connection.
                             unauthenticatedClient.on('close', () => {
                                 this.log('running', 'Connection without credentials closed');
-                                callback(null, false, 'An error occured when publishing on the topic with the unauthenticated client');
+                                callback(null, false, `An error occured when publishing on the topic ${this.parameters.topic} with the unauthenticated client`);
                             });
                             unauthenticatedClient.end(true);
                         } else {
-                            this.log('running', 'Sending message on connection without credentials');
+                            this.log('running', `Sending message to ${this.parameters.topic} on connection without credentials`);
                         }
                     });
 
@@ -129,12 +129,12 @@ class AuthorizationTest extends ExecutableTest<AuthorizationTestParameters> {
                             isLoggingOnClose = false;
                             authenticatedClient.end(true);
                             this.log('error', error.message);
-                            callback(null, false, 'An error occured when subscribing to the topic with the authenticated client');
+                            callback(null, false, `An error occured when subscribing to the topic ${this.parameters.topic} with the authenticated client`);
                         } else {
                             this.log('running', 'Listening for messages on connection with credentials');
                             // Subscribing successful. Register event to listen to received message.
                             authenticatedClient.on('message', () => {
-                                this.log('running', 'Message received on connection with credentials');
+                                this.log('running', `Message received from ${this.parameters.topic} on connection with credentials`);
                                 continueTest = false;
                                 isLoggingOnClose = false;
                                 authenticatedClient.on('close', () => {
@@ -155,9 +155,9 @@ class AuthorizationTest extends ExecutableTest<AuthorizationTestParameters> {
                                     isLoggingOnClose = false;
                                     authenticatedClient.end(true);
                                     this.log('error', error.message);
-                                    callback(null, false, 'An error occured when publishing on the topic with the authenticated client');
+                                    callback(null, false, `An error occured when publishing on the topic ${this.parameters.topic} with the authenticated client`);
                                 } else {
-                                    this.log('running', 'Sending message on connection with credentials');
+                                    this.log('running', `Sending message to ${this.parameters.topic} on connection with credentials`);
                                 }
                             });
 
