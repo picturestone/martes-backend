@@ -5,7 +5,13 @@ import WildcardSubscriptionTestParameters from '../testparameters/wildcardSubscr
 import TestType from '../testtype';
 
 class WildcardSubscriptionTest extends ExecutableTest<WildcardSubscriptionTestParameters> {
-    public static readonly testType: TestType = TestType.Connection;
+    public static readonly testType: TestType = TestType.WildcardSubscription;
+    private timoutAfter: number;
+
+    constructor(parameters: WildcardSubscriptionTestParameters, id?: number) {
+        super(parameters, id);
+        this.timoutAfter = parseInt(process.env.TIMEOUT_AFTER as string, 10);
+    }
 
     public get testType(): TestType {
         return WildcardSubscriptionTest.testType;
@@ -16,9 +22,10 @@ class WildcardSubscriptionTest extends ExecutableTest<WildcardSubscriptionTestPa
         const uuid: string = crypto.randomBytes(16).toString('base64');
 
         const unauthenticatedClient: Client = mqtt.connect(null, {
-            host: '192.168.1.50',
-            port: 1883,
-            reconnectPeriod: 0
+            host: this.parameters.host,
+            port: this.parameters.port,
+            reconnectPeriod: 0,
+            connectTimeout: this.timoutAfter
         });
 
         // TODO the connection needs to be closed at some point, we cant wait until the correct message is received, maybe it cant be sent!

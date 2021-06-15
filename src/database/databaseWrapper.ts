@@ -91,7 +91,6 @@ class DatabaseWrapper {
             if (err) {
                 console.error(err.message);
             }
-            console.log('Connected to database.');
         });
     }
 

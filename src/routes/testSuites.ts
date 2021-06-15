@@ -9,6 +9,7 @@ const router: Router = express.Router();
 router.get('/', (req, res) => {
     (new TestSuiteFacade()).getAll((err: Error | null, testSuites: TestSuite[] | null) => {
         if (err) {
+            console.error(err.stack);
             res.status(500).send(err.message);
         } else {
             res.json(testSuites);
@@ -24,6 +25,7 @@ router.get('/:id', (req, res) => {
     }
     (new TestSuiteFacade()).getById(id, (err: Error | null, testSuite: TestSuite | null) => {
         if (err) {
+            console.error(err.stack);
             res.status(500).send(err.message);
         } else if (testSuite === null) {
             res.sendStatus(404);
@@ -41,6 +43,7 @@ router.delete('/:id', (req, res) => {
     }
     (new TestSuiteFacade()).delete(id, (err: Error | null, identifier: number | null) => {
         if (err) {
+            console.error(err.stack);
             res.status(500).send(err.message);
         } else if (identifier === null) {
             res.sendStatus(404);
@@ -59,6 +62,7 @@ router.post('/:id', (req, res) => {
     }
     (new TestSuiteSchemeFacade()).getById(id, (err: Error | null, testSuiteScheme: TestSuiteScheme | null) => {
         if (err) {
+            console.error(err.stack);
             res.status(500).send(err.message);
         } else if (testSuiteScheme === null) {
             res.sendStatus(404);
@@ -67,10 +71,12 @@ router.post('/:id', (req, res) => {
 
             (new TestSuiteFacade()).save(testSuite, (err: Error | null, identifier: number) => {
                 if (err) {
+                    console.error(err.stack);
                     res.status(500).send(err.message);
                 } else {
                     (new TestSuiteFacade()).getById(identifier, (err: Error | null, testSuite: TestSuite | null) => {
                         if (err) {
+                            console.error(err.stack);
                             res.status(500).send(err.message);
                         } else {
                             testSuite?.execute();

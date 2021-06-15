@@ -27,12 +27,12 @@ abstract class ExecutableTest<parametersType> {
         return {
             id: this.id,
             testType: this.testType,
-            parameters: this.parameters,
+            params: this.parameters,
             logMessages: this.logMessages
         }
     }
 
-    protected log(status: 'info' | 'failed' | 'successful' | 'error', message: string) {
+    protected log(status: 'running' | 'failed' | 'successful' | 'error', message: string) {
         const now: Date = new Date();
         this.loggers.forEach((logger: Logger) => {
             logger.log({id: this.nextLogMessageId, time: now, status, message});
@@ -41,9 +41,8 @@ abstract class ExecutableTest<parametersType> {
     }
 
     public execute(callback: (err: Error | null) => void) {
-        // TODO add state for test and set it to running
-        this.log('info', 'Starting ' + this.testType + ' with following parameters:');
-        this.log('info',  JSON.stringify(this.parameters));
+        this.log('running', 'Starting ' + this.testType + ' with following parameters:');
+        this.log('running',  JSON.stringify(this.parameters));
         this.executeTestScript((err: Error | null, isFinishedSuccessfuly?: boolean, failureReason?: string) => {
             if(err) {
                 this.log('error', err.message);

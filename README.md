@@ -42,6 +42,27 @@ This project provides the backend for the martes project. Martes is a tool to te
 
 The backend provides means to add test suite schemes with related test schemes. The schemes provide all necessary parameters for the tests. From the schemes, concrete tests can be generated. This way, the parameters only need to be set once and then the tests can be executed as often as necessary. Every test has it's own log messages. By generating a new tests from the scheme at every execution, the history of executed tests can be preserved.
 
+## Available tests
+
+All available tests and their corresponding key can be found in `src/models/testtype.ts`. The parameters for each test can be found in `src/models/testparameters`.
+
+The following tests and required parameters are implemented:
+
+- `authentication` - Checks if a specific user can establish a connection to a mosquitto server
+  - `host` - IP Address where server is running
+  - `port` - Port where server is listening
+  - `username` - Username that should be chacked
+  - `password` - Password to use
+- `authorization`
+- `connection` - Checks if a connection to a mosquitto server can be established
+  - `host` - IP Address where server is running
+  - `port` - Port where server is listening
+- `dataEncryption`
+- `defaultPassword`
+- `wildcardSubscription` - Checks if subscriptions to the topic `#` are allowed
+  - `host` - IP Address where server is running
+  - `port` - Port where server is listening
+
 ## API
 
 A postman collection `Martes.postman_collection.json` is also available in the root folder. This might be more explanatory than this API documentation.
@@ -91,7 +112,7 @@ Returns: Test suite scheme data, e.g.:
         {
             "id": 1,
             "testType": "connection",
-            "parameters": {
+            "params": {
                 "host": "192.168.1.50",
                 "port": 1884
             }
@@ -99,7 +120,7 @@ Returns: Test suite scheme data, e.g.:
         {
             "id": 2,
             "testType": "connection",
-            "parameters": {
+            "params": {
                 "host": "192.168.1.51",
                 "port": 3000
             }
@@ -215,7 +236,7 @@ Returns: `1`
         {
             "id": 1,
             "testType": "connection",
-            "parameters": {
+            "params": {
                 "host": "192.168.1.50",
                 "port": 1884
             }
@@ -223,7 +244,7 @@ Returns: `1`
         {
             "id": 2,
             "testType": "connection",
-            "parameters": {
+            "params": {
                 "host": "192.168.1.51",
                 "port": 3000
             }
@@ -266,7 +287,7 @@ Returns: `1`
         {
             "id": 1,
             "testType": "connection",
-            "parameters": {
+            "params": {
                 "host": "192.168.0.25",
                 "port": 1884
             }
@@ -274,7 +295,7 @@ Returns: `1`
         {
             "id": 3,
             "testType": "connection",
-            "parameters": {
+            "params": {
                 "host": "10.0.0.1",
                 "port": 3000
             }
@@ -313,7 +334,7 @@ Returns: Test suite data, e.g.:
         {
             "id": 1,
             "testType": "connection",
-            "parameters": {
+            "params": {
                 "host": "192.168.1.50",
                 "port": 1884
             },
@@ -348,7 +369,7 @@ Returns: Test suite data, e.g.:
         {
             "id": 2,
             "testType": "connection",
-            "parameters": {
+            "params": {
                 "host": "192.168.1.51",
                 "port": 3000
             },
