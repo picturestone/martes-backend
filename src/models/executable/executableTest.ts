@@ -8,6 +8,7 @@ abstract class ExecutableTest<parametersType> {
     public id: number | undefined;
     public parameters: Readonly<parametersType>;
     public logMessages: LogMessage[];
+    protected wikiLink: string;
     private loggers: Logger[];
     private nextLogMessageId: number;
 
@@ -16,6 +17,7 @@ abstract class ExecutableTest<parametersType> {
         this.parameters = parameters;
         this.logMessages = [];
         this.nextLogMessageId = 1;
+        this.wikiLink = '';
         this.loggers = [
             new DatabaseLogger(this),
             new SocketLogger(this)
@@ -28,7 +30,8 @@ abstract class ExecutableTest<parametersType> {
             id: this.id,
             testType: this.testType,
             params: this.parameters,
-            logMessages: this.logMessages
+            logMessages: this.logMessages,
+            wikiLink: this.wikiLink
         }
     }
 

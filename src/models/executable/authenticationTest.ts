@@ -10,6 +10,7 @@ class AuthenticationTest extends ExecutableTest<AuthenticationTestParameters> {
     constructor(parameters: AuthenticationTestParameters, id?: number) {
         super(parameters, id);
         this.timoutAfter = parseInt(process.env.TIMEOUT_AFTER as string, 10);
+        this.wikiLink = (process.env.WIKI_BASE_URL as string) + '/en/missing-authentication';
     }
 
     public get testType(): TestType {
