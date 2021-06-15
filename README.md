@@ -81,20 +81,42 @@ e.g.: `localhost:7000/testsuiteschemes`
 Example body: 
 ```
 {
-    "name": "ConnectionTests2",
-    "tests": [
+    "name": "GeneralTest",
+    "testSchemes": [
         {
             "testType": "connection",
             "params": {
                 "host": "192.168.1.50",
-                "port": 1884
+                "port": 1883
             }
         },
         {
-            "testType": "connection",
+            "testType": "authentication",
             "params": {
-                "host": "192.168.1.51",
-                "port": 3000
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi"
+            }
+        },
+        {
+            "testType": "authorization",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi",
+                "topic": "test/lbi"
+            }
+        },
+        {
+            "testType": "wildcardSubscription",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi",
+                "topic": "wildcardtest/lbi"
             }
         }
     ]
@@ -112,7 +134,7 @@ Returns: Test suite scheme data, e.g.:
 
 ```
 {
-    "name": "ConnectionTests2",
+    "name": "GeneralTest",
     "id": 1,
     "testSchemes": [
         {
@@ -120,15 +142,39 @@ Returns: Test suite scheme data, e.g.:
             "testType": "connection",
             "params": {
                 "host": "192.168.1.50",
-                "port": 1884
+                "port": 1883
             }
         },
         {
             "id": 2,
-            "testType": "connection",
+            "testType": "authentication",
             "params": {
-                "host": "192.168.1.51",
-                "port": 3000
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi"
+            }
+        },
+        {
+            "id": 3,
+            "testType": "authorization",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi",
+                "topic": "test/lbi"
+            }
+        },
+        {
+            "id": 4,
+            "testType": "wildcardSubscription",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi",
+                "topic": "wildcardtest/lbi"
             }
         }
     ]
@@ -212,20 +258,42 @@ In this example 4 requests are made:
 **Request 1:** Sending `POST` to `localhost:7000/testsuiteschemes` with the follwing body:
 ```
 {
-    "name": "ConnectionTests2",
-    "tests": [
+    "name": "GeneralTest",
+    "testSchemes": [
         {
             "testType": "connection",
             "params": {
                 "host": "192.168.1.50",
-                "port": 1884
+                "port": 1883
             }
         },
         {
-            "testType": "connection",
+            "testType": "authentication",
             "params": {
-                "host": "192.168.1.51",
-                "port": 3000
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi"
+            }
+        },
+        {
+            "testType": "authorization",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi",
+                "topic": "test/lbi"
+            }
+        },
+        {
+            "testType": "wildcardSubscription",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi",
+                "topic": "wildcardtest/lbi"
             }
         }
     ]
@@ -236,7 +304,7 @@ Returns: `1`
 **Request 2:** Sending `GET` to `localhost:7000/testsuiteschemes/1` returns: 
 ```
 {
-    "name": "ConnectionTests2",
+    "name": "GeneralTest",
     "id": 1,
     "testSchemes": [
         {
@@ -244,15 +312,39 @@ Returns: `1`
             "testType": "connection",
             "params": {
                 "host": "192.168.1.50",
-                "port": 1884
+                "port": 1883
             }
         },
         {
             "id": 2,
-            "testType": "connection",
+            "testType": "authentication",
             "params": {
-                "host": "192.168.1.51",
-                "port": 3000
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi"
+            }
+        },
+        {
+            "id": 3,
+            "testType": "authorization",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi",
+                "topic": "test/lbi"
+            }
+        },
+        {
+            "id": 4,
+            "testType": "wildcardSubscription",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi",
+                "topic": "wildcardtest/lbi"
             }
         }
     ]
@@ -299,7 +391,7 @@ Returns: `1`
             }
         },
         {
-            "id": 3,
+            "id": 5,
             "testType": "connection",
             "params": {
                 "host": "10.0.0.1",
@@ -339,38 +431,58 @@ Returns: Test suite data, e.g.:
     "tests": [
         {
             "id": 1,
-            "testType": "connection",
+            "testType": "authentication",
             "params": {
                 "host": "192.168.1.50",
-                "port": 1884
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi"
             },
             "logMessages": [
                 {
-                    "time": "2021-06-06T17:02:45.388Z",
-                    "status": "info",
-                    "message": "Starting connection with following parameters:"
+                    "id": 1,
+                    "time": "2021-06-15T15:55:08.945Z",
+                    "status": "running",
+                    "message": "Starting authentication with following parameters:"
                 },
                 {
-                    "time": "2021-06-06T17:02:45.388Z",
-                    "status": "info",
-                    "message": "{\"host\":\"192.168.1.50\",\"port\":1884}"
+                    "id": 2,
+                    "time": "2021-06-15T15:55:08.945Z",
+                    "status": "running",
+                    "message": "{\"host\":\"192.168.1.50\",\"port\":1883,\"username\":\"lbi\",\"password\":\"lbi\"}"
                 },
                 {
-                    "time": "2021-06-06T17:02:45.388Z",
-                    "status": "info",
-                    "message": "Opening connection..."
+                    "id": 3,
+                    "time": "2021-06-15T15:55:08.945Z",
+                    "status": "running",
+                    "message": "Opening connection without credentials..."
                 },
                 {
-                    "time": "2021-06-06T17:02:47.431Z",
-                    "status": "info",
-                    "message": "Connection opened"
+                    "id": 4,
+                    "time": "2021-06-15T15:55:08.970Z",
+                    "status": "running",
+                    "message": "Connection without credentials closed"
                 },
                 {
-                    "time": "2021-06-06T17:02:47.431Z",
+                    "id": 5,
+                    "time": "2021-06-15T15:55:08.970Z",
+                    "status": "running",
+                    "message": "Opening connection with credentials..."
+                },
+                {
+                    "id": 6,
+                    "time": "2021-06-15T15:55:08.979Z",
+                    "status": "running",
+                    "message": "Connection with credentials opened"
+                },
+                {
+                    "id": 7,
+                    "time": "2021-06-15T15:55:08.979Z",
                     "status": "successful",
                     "message": "Test completed successfuly"
                 }
-            ]
+            ],
+            "wikiLink": "http://192.168.1.50:3000/en/missing-authentication"
         },
         {
             "id": 2,
