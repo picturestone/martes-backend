@@ -5,7 +5,7 @@ import ExecutableTest from '../executable/executableTest';
 import AuthenticationTest from '../executable/authenticationTest';
 
 class AuthenticationTestScheme extends TestScheme<AuthenticationTestParameters> {
-    public static readonly testType: TestType = TestType.Connection;
+    public static readonly testType: TestType = TestType.Authentication;
 
     public get testType(): TestType {
         return AuthenticationTestScheme.testType;
