@@ -49,6 +49,35 @@ class TestSuiteFacade {
         });
     }
 
+    public delete(id: number, callback: (err: Error | null, identifier: number | null) => void) {
+        // Check if entry with id exists.
+        this.getById(id, (err: Error | null, oldTestSuite: TestSuite | null) => {
+            if (err) {
+                callback(err, null);
+            } else if (oldTestSuite === null) {
+                callback(null, null);
+            } else {
+                DatabaseWrapper.getDatabase().then((db: Database) => {
+                    // Turn on foreign key support
+                    db.run(`PRAGMA foreign_keys = ON`, (err: Error) => {
+                        if (err) {
+                            callback(err, null);
+                        } else {
+                            const sql = `DELETE FROM testsuites WHERE id = ?`;
+                            db.run(sql, [id], (err: Error) => {
+                                if (err) {
+                                    callback(err, null);
+                                } else {
+                                    callback(null, id);
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    }
+
     public save(testSuite: TestSuite, callback: (err: Error | null, identifier: number) => void) {
         DatabaseWrapper.getDatabase().then((db: Database) => {
             const handleError = (err: Error) => {

@@ -34,7 +34,7 @@ class DatabaseWrapper {
                         testsuiteschemeId INTEGER NOT NULL,
                         testType TEXT NOT NULL,
                         parameters TEXT NOT NULL,
-                        FOREIGN KEY(testsuiteschemeId) REFERENCES testsuiteschemes(id)
+                        FOREIGN KEY(testsuiteschemeId) REFERENCES testsuiteschemes(id) ON DELETE CASCADE
                     );
                 `;
                 db.run(sql, (err: Error) => {
@@ -72,7 +72,7 @@ class DatabaseWrapper {
                         testType TEXT NOT NULL,
                         parameters TEXT NOT NULL,
                         logMessages TEXT,
-                        FOREIGN KEY(testsuiteId) REFERENCES testsuites(id)
+                        FOREIGN KEY(testsuiteId) REFERENCES testsuites(id) ON DELETE CASCADE
                     );
                 `;
                 db.run(sql, (err: Error) => {
@@ -103,7 +103,7 @@ class DatabaseWrapper {
         if (!fs.existsSync(this._instance.dbPath)) {
             try {
                 await this._instance.createNewDbFile();
-            } catch (error) {
+            } catch (error: any) {
                 console.error(error.message);
             }
         }

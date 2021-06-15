@@ -16,10 +16,8 @@ This project provides the backend for the martes project. Martes is a tool to te
 
 1. Clone the git repo: `git clone git@github.com:picturestone/martes-backend.git`
 2. Switch into the directory: `cd martes-backend`
-3. Copy the .env.example file and call it .env: `cp .env.example .env`
-4. Change the .env file to fit your needs
-5. Build the image: `docker build . -t martes-sec/martes-backend`
-6. Run the container: `docker run -p 7000:7000 --name=martes-backend martes-sec/martes-backend`
+3. Build the image: `docker build . -t martes-sec/martes-backend`
+4. Run the container: `docker run -p 7000:7000 --name=martes-backend martes-sec/martes-backend`
 
 ## Installation - Development
 
@@ -37,6 +35,8 @@ This project provides the backend for the martes project. Martes is a tool to te
 `npm run dev` - Run node and watch for changes.
 `npm run build` - Build backend for production. Output is in `bin` folder.
 `npm run start` - Start the backend in production.
+`docker build . -t martes-sec/martes-backend` - Build the docker image.
+`docker run -p 7000:7000 --name=martes-backend martes-sec/martes-backend` - Run the docker container.
 
 ## Basic functionality
 
@@ -129,6 +129,13 @@ Returns: All test suite scheme ids and names in an array (note: testSchemes arra
     }
 ]
 ```
+
+### Delete test suite scheme
+
+DELETE `localhost:{PORT}/testsuiteschemes/{TEST SUITE SCHEME ID}`
+e.g.: `localhost:7000/testsuiteschemes/1`
+
+Returns: ID of the deleted test suite scheme
 
 ### Edit existing test suite scheme
 
@@ -403,6 +410,13 @@ Returns: All test suites ids and names in an array (note: tests array is always 
     }
 ]
 ```
+
+### Delete test suite
+
+DELETE `localhost:{PORT}/testsuites/{TEST SUITE ID}`
+e.g.: `localhost:7000/testsuites/1`
+
+Returns: ID of the deleted test suite
 
 ## Logging
 
