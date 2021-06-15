@@ -11,6 +11,7 @@ class AuthorizationTest extends ExecutableTest<AuthorizationTestParameters> {
     constructor(parameters: AuthorizationTestParameters, id?: number) {
         super(parameters, id);
         this.timoutAfter = parseInt(process.env.TIMEOUT_AFTER as string, 10);
+        this.wikiLink = (process.env.WIKI_BASE_URL as string) + '/en/missing-authorization';
     }
 
     public get testType(): TestType {
