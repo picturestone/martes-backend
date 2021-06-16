@@ -9,6 +9,7 @@ const router: Router = express.Router();
 router.get('/', (req, res) => {
     (new TestSuiteSchemeFacade()).getAll((err: Error | null, testSuiteSchemes: TestSuiteScheme[] | null) => {
         if (err) {
+            console.error(err.stack);
             res.status(500).send(err.message);
         } else {
             res.json(testSuiteSchemes);
@@ -24,11 +25,30 @@ router.get('/:id', (req, res) => {
     }
     (new TestSuiteSchemeFacade()).getById(id, (err: Error | null, testSuiteScheme: TestSuiteScheme | null) => {
         if (err) {
+            console.error(err.stack);
             res.status(500).send(err.message);
         } else if (testSuiteScheme === null) {
             res.sendStatus(404);
         } else {
             res.json(testSuiteScheme);
+        }
+    });
+});
+
+router.delete('/:id', (req, res) => {
+    const id: number = Number(req.params.id);
+    if (id === NaN) {
+        res.status(400).send('Id must be a number');
+        return;
+    }
+    (new TestSuiteSchemeFacade()).delete(id, (err: Error | null, identifier: number | null) => {
+        if (err) {
+            console.error(err.stack);
+            res.status(500).send(err.message);
+        } else if (identifier === null) {
+            res.sendStatus(404);
+        } else {
+            res.json(identifier);
         }
     });
 });
@@ -47,13 +67,15 @@ router.put('/:id', (req, res) => {
             const testScheme: TestScheme<any> = testFactory.getTestScheme(testData.testType, testData.params, testData.id);
             testSuiteScheme.testSchemes.push(testScheme);
         });
-    } catch (error: any) {
-        res.status(400).send(error.message);
+    } catch (err: any) {
+        console.error(err.stack);
+        res.status(400).send(err.message);
         return;
     }
 
     (new TestSuiteSchemeFacade()).update(id, testSuiteScheme, (err: Error | null, identifier: number | null) => {
         if (err) {
+            console.error(err.stack);
             res.status(500).send(err.message);
         } else if (identifier === null) {
             res.sendStatus(404);
@@ -72,13 +94,15 @@ router.post('/', (req, res) => {
             const testScheme: TestScheme<any> = testFactory.getTestScheme(testData.testType, testData.params);
             testSuiteScheme.testSchemes.push(testScheme);
         });
-    } catch (error: any) {
-        res.status(400).send(error.message);
+    } catch (err: any) {
+        console.error(err.stack);
+        res.status(400).send(err.message);
         return;
     }
 
     (new TestSuiteSchemeFacade()).save(testSuiteScheme, (err: Error | null, identifier: number) => {
         if (err) {
+            console.error(err.stack);
             res.status(500).send(err.message);
         } else {
             res.status(201).send(identifier + '', );

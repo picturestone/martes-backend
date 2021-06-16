@@ -1,4 +1,4 @@
-interface WildcardSubscriptionTestParameters {
+interface AuthorizationTestParameters {
     host: string;
     port: number;
     username: string;
@@ -6,4 +6,4 @@ interface WildcardSubscriptionTestParameters {
     topic: string;
 }
 
-export default WildcardSubscriptionTestParameters;
+export default AuthorizationTestParameters;

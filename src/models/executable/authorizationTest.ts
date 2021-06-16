@@ -1,21 +1,21 @@
 import mqtt, { Client } from 'mqtt';
 import crypto from 'crypto';
-import ExecutableTest from './executableTest';
-import WildcardSubscriptionTestParameters from '../testparameters/wildcardSubscriptionTestParameters';
+import AuthorizationTestParameters from '../testparameters/authorizationTestParameters';
 import TestType from '../testtype';
+import ExecutableTest from './executableTest';
 
-class WildcardSubscriptionTest extends ExecutableTest<WildcardSubscriptionTestParameters> {
-    public static readonly testType: TestType = TestType.WildcardSubscription;
+class AuthorizationTest extends ExecutableTest<AuthorizationTestParameters> {
+    public static readonly testType: TestType = TestType.Authorization;
     private timoutAfter: number;
 
-    constructor(parameters: WildcardSubscriptionTestParameters, id?: number) {
+    constructor(parameters: AuthorizationTestParameters, id?: number) {
         super(parameters, id);
         this.timoutAfter = parseInt(process.env.TIMEOUT_AFTER as string, 10);
         this.wikiLink = (process.env.WIKI_BASE_URL as string) + '/en/missing-authorization';
     }
 
     public get testType(): TestType {
-        return WildcardSubscriptionTest.testType;
+        return AuthorizationTest.testType;
     }
 
     public executeTestScript(callback: (err: Error | null, isFinishedSuccessfuly?: boolean, failureReason?: string) => void): void {
@@ -32,14 +32,14 @@ class WildcardSubscriptionTest extends ExecutableTest<WildcardSubscriptionTestPa
         unauthenticatedClient.on('connect', () => {
             // Connecting without credentials is possible, subscribe to topic and send dummy data.
             this.log('running', 'Connection without credentials opened');
-            unauthenticatedClient.subscribe('#', (error) => {
+            unauthenticatedClient.subscribe(this.parameters.topic, (error) => {
                 if (error) {
                     // Subscribing failed. Log error and finish test.
                     continueTest = false;
                     this.log('error', error.message);
                     unauthenticatedClient.on('close', () => {
                         this.log('running', 'Connection without credentials closed');
-                        callback(null, false, 'An error occured when subscribing to the topic # with the unauthenticated client');
+                        callback(null, false, `An error occured when subscribing to the topic ${this.parameters.topic} with the unauthenticated client`);
                     });
                     unauthenticatedClient.end(true);
 
@@ -48,14 +48,14 @@ class WildcardSubscriptionTest extends ExecutableTest<WildcardSubscriptionTestPa
                     this.log('running', 'Listening for messages on connection without credentials');
                     //Register event to listen to received message.
                     unauthenticatedClient.on('message', () => {
-                        this.log('running', 'Message received from # on connection without credentials');
+                        this.log('running', `Message received from ${this.parameters.topic} on connection without credentials`);
                         // Data receiving is successful.
                         continueTest = false;
                         // Close connection.
                         unauthenticatedClient.on('close', () => {
                             this.log('running', 'Connection without credentials closed');
                             // Log failed test as ACL should prevent this.
-                            callback(null, false, `Reading data from the topic # with an unauthenticated client was successful. Check the wiki for help.`);
+                            callback(null, false, `Reading data from the topic ${this.parameters.topic} with an unauthenticated client was successful. Check the wiki for help.`);
                         });
                         unauthenticatedClient.end(true);
                     });
@@ -74,7 +74,7 @@ class WildcardSubscriptionTest extends ExecutableTest<WildcardSubscriptionTestPa
                             });
                             unauthenticatedClient.end(true);
                         } else {
-                            this.log('running', `Sending message to ${this.parameters.topic}on connection without credentials`);
+                            this.log('running', `Sending message to ${this.parameters.topic} on connection without credentials`);
                         }
                     });
 
@@ -130,18 +130,18 @@ class WildcardSubscriptionTest extends ExecutableTest<WildcardSubscriptionTestPa
                             isLoggingOnClose = false;
                             authenticatedClient.end(true);
                             this.log('error', error.message);
-                            callback(null, false, 'An error occured when subscribing to the topic # with the authenticated client');
+                            callback(null, false, `An error occured when subscribing to the topic ${this.parameters.topic} with the authenticated client`);
                         } else {
                             this.log('running', 'Listening for messages on connection with credentials');
                             // Subscribing successful. Register event to listen to received message.
                             authenticatedClient.on('message', () => {
-                                this.log('running', 'Message received from # on connection with credentials');
+                                this.log('running', `Message received from ${this.parameters.topic} on connection with credentials`);
                                 continueTest = false;
                                 isLoggingOnClose = false;
                                 authenticatedClient.on('close', () => {
                                     this.log('running', 'Connection with credentials closed');
                                     // Log failed test as ACL should prevent this.
-                                    callback(null, false, `Reading data from the topic # with an authenticated client was successful. Check the wiki for help.`);
+                                    callback(null, false, `Reading data from the topic ${this.parameters.topic} with an authenticated client was successful. Check the wiki for help.`);
                                 });
                                 // Data receiving is successful.
                                 // Close connection.
@@ -182,4 +182,4 @@ class WildcardSubscriptionTest extends ExecutableTest<WildcardSubscriptionTestPa
     }
 }
 
-export default WildcardSubscriptionTest;
+export default AuthorizationTest;

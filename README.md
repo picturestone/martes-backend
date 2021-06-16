@@ -16,10 +16,8 @@ This project provides the backend for the martes project. Martes is a tool to te
 
 1. Clone the git repo: `git clone git@github.com:picturestone/martes-backend.git`
 2. Switch into the directory: `cd martes-backend`
-3. Copy the .env.example file and call it .env: `cp .env.example .env`
-4. Change the .env file to fit your needs
-5. Build the image: `docker build . -t martes-sec/martes-backend`
-6. Run the container: `docker run -p 7000:7000 --name=martes-backend martes-sec/martes-backend`
+3. Build the image: `docker build . -t martes-sec/martes-backend`
+4. Run the container: `docker run -p 7000:7000 --name=martes-backend martes-sec/martes-backend`
 
 ## Installation - Development
 
@@ -37,10 +35,39 @@ This project provides the backend for the martes project. Martes is a tool to te
 `npm run dev` - Run node and watch for changes.
 `npm run build` - Build backend for production. Output is in `bin` folder.
 `npm run start` - Start the backend in production.
+`docker build . -t martes-sec/martes-backend` - Build the docker image.
+`docker run -p 7000:7000 --name=martes-backend martes-sec/martes-backend` - Run the docker container.
 
 ## Basic functionality
 
 The backend provides means to add test suite schemes with related test schemes. The schemes provide all necessary parameters for the tests. From the schemes, concrete tests can be generated. This way, the parameters only need to be set once and then the tests can be executed as often as necessary. Every test has it's own log messages. By generating a new tests from the scheme at every execution, the history of executed tests can be preserved.
+
+## Available tests
+
+All available tests and their corresponding key can be found in `src/models/testtype.ts`. The parameters for each test can be found in `src/models/testparameters`. In general, tests assume that you want to restrict a right, so if the authorization test is able to send and receive something on the specified topic it failes because the test assumes that you want to make sure that noone can just send and receive on the topic.
+
+The following tests and required parameters are implemented:
+
+- `authentication` - Checks if a specific user can establish a connection to a mosquitto server
+  - `host` - IP Address where server is running
+  - `port` - Port where server is listening
+  - `username` - Username that should be checked
+  - `password` - Password to use
+- `authorization` - Checks if an anonymous user or the specific user can read or write on a specific topic
+  - `host` - IP Address where server is running
+  - `port` - Port where server is listening
+  - `username` - Username that should be checked
+  - `password` - Password to use
+  - `topic` - The topic which should be testet for read and write rights. Make sure this is not a sensitive topic, as some dummy data will be sent!
+- `connection` - Checks if a connection to a mosquitto server can be established
+  - `host` - IP Address where server is running
+  - `port` - Port where server is listening
+- `wildcardSubscription` - Checks if subscriptions to the topic `#` are allowed
+  - `host` - IP Address where server is running
+  - `port` - Port where server is listening
+  - `username` - Username that should be checked
+  - `password` - Password to use
+  - `topic` - The topic which should be used to send data. Make sure this is not a sensitive topic, as some dummy data will be sent!
 
 ## API
 
@@ -54,20 +81,42 @@ e.g.: `localhost:7000/testsuiteschemes`
 Example body: 
 ```
 {
-    "name": "ConnectionTests2",
-    "tests": [
+    "name": "GeneralTest",
+    "testSchemes": [
         {
             "testType": "connection",
             "params": {
                 "host": "192.168.1.50",
-                "port": 1884
+                "port": 1883
             }
         },
         {
-            "testType": "connection",
+            "testType": "authentication",
             "params": {
-                "host": "192.168.1.51",
-                "port": 3000
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi"
+            }
+        },
+        {
+            "testType": "authorization",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi",
+                "topic": "test/lbi"
+            }
+        },
+        {
+            "testType": "wildcardSubscription",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi",
+                "topic": "wildcardtest/lbi"
             }
         }
     ]
@@ -85,23 +134,47 @@ Returns: Test suite scheme data, e.g.:
 
 ```
 {
-    "name": "ConnectionTests2",
+    "name": "GeneralTest",
     "id": 1,
     "testSchemes": [
         {
             "id": 1,
             "testType": "connection",
-            "parameters": {
+            "params": {
                 "host": "192.168.1.50",
-                "port": 1884
+                "port": 1883
             }
         },
         {
             "id": 2,
-            "testType": "connection",
-            "parameters": {
-                "host": "192.168.1.51",
-                "port": 3000
+            "testType": "authentication",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi"
+            }
+        },
+        {
+            "id": 3,
+            "testType": "authorization",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi",
+                "topic": "test/lbi"
+            }
+        },
+        {
+            "id": 4,
+            "testType": "wildcardSubscription",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi",
+                "topic": "wildcardtest/lbi"
             }
         }
     ]
@@ -129,6 +202,13 @@ Returns: All test suite scheme ids and names in an array (note: testSchemes arra
     }
 ]
 ```
+
+### Delete test suite scheme
+
+DELETE `localhost:{PORT}/testsuiteschemes/{TEST SUITE SCHEME ID}`
+e.g.: `localhost:7000/testsuiteschemes/1`
+
+Returns: ID of the deleted test suite scheme
 
 ### Edit existing test suite scheme
 
@@ -178,20 +258,42 @@ In this example 4 requests are made:
 **Request 1:** Sending `POST` to `localhost:7000/testsuiteschemes` with the follwing body:
 ```
 {
-    "name": "ConnectionTests2",
-    "tests": [
+    "name": "GeneralTest",
+    "testSchemes": [
         {
             "testType": "connection",
             "params": {
                 "host": "192.168.1.50",
-                "port": 1884
+                "port": 1883
             }
         },
         {
-            "testType": "connection",
+            "testType": "authentication",
             "params": {
-                "host": "192.168.1.51",
-                "port": 3000
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi"
+            }
+        },
+        {
+            "testType": "authorization",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi",
+                "topic": "test/lbi"
+            }
+        },
+        {
+            "testType": "wildcardSubscription",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi",
+                "topic": "wildcardtest/lbi"
             }
         }
     ]
@@ -202,23 +304,47 @@ Returns: `1`
 **Request 2:** Sending `GET` to `localhost:7000/testsuiteschemes/1` returns: 
 ```
 {
-    "name": "ConnectionTests2",
+    "name": "GeneralTest",
     "id": 1,
     "testSchemes": [
         {
             "id": 1,
             "testType": "connection",
-            "parameters": {
+            "params": {
                 "host": "192.168.1.50",
-                "port": 1884
+                "port": 1883
             }
         },
         {
             "id": 2,
-            "testType": "connection",
-            "parameters": {
-                "host": "192.168.1.51",
-                "port": 3000
+            "testType": "authentication",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi"
+            }
+        },
+        {
+            "id": 3,
+            "testType": "authorization",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi",
+                "topic": "test/lbi"
+            }
+        },
+        {
+            "id": 4,
+            "testType": "wildcardSubscription",
+            "params": {
+                "host": "192.168.1.50",
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi",
+                "topic": "wildcardtest/lbi"
             }
         }
     ]
@@ -259,15 +385,15 @@ Returns: `1`
         {
             "id": 1,
             "testType": "connection",
-            "parameters": {
+            "params": {
                 "host": "192.168.0.25",
                 "port": 1884
             }
         },
         {
-            "id": 3,
+            "id": 5,
             "testType": "connection",
-            "parameters": {
+            "params": {
                 "host": "10.0.0.1",
                 "port": 3000
             }
@@ -305,43 +431,63 @@ Returns: Test suite data, e.g.:
     "tests": [
         {
             "id": 1,
-            "testType": "connection",
-            "parameters": {
+            "testType": "authentication",
+            "params": {
                 "host": "192.168.1.50",
-                "port": 1884
+                "port": 1883,
+                "username": "lbi",
+                "password": "lbi"
             },
             "logMessages": [
                 {
-                    "time": "2021-06-06T17:02:45.388Z",
-                    "status": "info",
-                    "message": "Starting connection with following parameters:"
+                    "id": 1,
+                    "time": "2021-06-15T15:55:08.945Z",
+                    "status": "running",
+                    "message": "Starting authentication with following parameters:"
                 },
                 {
-                    "time": "2021-06-06T17:02:45.388Z",
-                    "status": "info",
-                    "message": "{\"host\":\"192.168.1.50\",\"port\":1884}"
+                    "id": 2,
+                    "time": "2021-06-15T15:55:08.945Z",
+                    "status": "running",
+                    "message": "{\"host\":\"192.168.1.50\",\"port\":1883,\"username\":\"lbi\",\"password\":\"lbi\"}"
                 },
                 {
-                    "time": "2021-06-06T17:02:45.388Z",
-                    "status": "info",
-                    "message": "Opening connection..."
+                    "id": 3,
+                    "time": "2021-06-15T15:55:08.945Z",
+                    "status": "running",
+                    "message": "Opening connection without credentials..."
                 },
                 {
-                    "time": "2021-06-06T17:02:47.431Z",
-                    "status": "info",
-                    "message": "Connection opened"
+                    "id": 4,
+                    "time": "2021-06-15T15:55:08.970Z",
+                    "status": "running",
+                    "message": "Connection without credentials closed"
                 },
                 {
-                    "time": "2021-06-06T17:02:47.431Z",
+                    "id": 5,
+                    "time": "2021-06-15T15:55:08.970Z",
+                    "status": "running",
+                    "message": "Opening connection with credentials..."
+                },
+                {
+                    "id": 6,
+                    "time": "2021-06-15T15:55:08.979Z",
+                    "status": "running",
+                    "message": "Connection with credentials opened"
+                },
+                {
+                    "id": 7,
+                    "time": "2021-06-15T15:55:08.979Z",
                     "status": "successful",
                     "message": "Test completed successfuly"
                 }
-            ]
+            ],
+            "wikiLink": "http://192.168.1.50:3000/en/missing-authentication"
         },
         {
             "id": 2,
             "testType": "connection",
-            "parameters": {
+            "params": {
                 "host": "192.168.1.51",
                 "port": 3000
             },
@@ -403,6 +549,13 @@ Returns: All test suites ids and names in an array (note: tests array is always 
     }
 ]
 ```
+
+### Delete test suite
+
+DELETE `localhost:{PORT}/testsuites/{TEST SUITE ID}`
+e.g.: `localhost:7000/testsuites/1`
+
+Returns: ID of the deleted test suite
 
 ## Logging
 

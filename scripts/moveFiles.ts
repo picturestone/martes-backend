@@ -17,8 +17,6 @@ const start = async () => {
 	}
 	for (const file of filesToCopy) {
 		const fullSource = path.resolve(src, file);
-		console.log('##########');
-		console.log(fullSource);
 		if(fs.existsSync(fullSource)) {
 			const fullDest = path.resolve(dst, file);
 			console.log(`Copy ${fullSource} -> ${fullDest}`);

@@ -15,7 +15,7 @@ abstract class TestScheme<parametersType> {
         return {
             id: this.id,
             testType: this.testType,
-            parameters: this.parameters
+            params: this.parameters
         }
     }
 

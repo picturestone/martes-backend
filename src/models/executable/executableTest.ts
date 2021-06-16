@@ -8,6 +8,7 @@ abstract class ExecutableTest<parametersType> {
     public id: number | undefined;
     public parameters: Readonly<parametersType>;
     public logMessages: LogMessage[];
+    protected wikiLink: string;
     private loggers: Logger[];
     private nextLogMessageId: number;
 
@@ -16,6 +17,7 @@ abstract class ExecutableTest<parametersType> {
         this.parameters = parameters;
         this.logMessages = [];
         this.nextLogMessageId = 1;
+        this.wikiLink = '';
         this.loggers = [
             new DatabaseLogger(this),
             new SocketLogger(this)
@@ -27,12 +29,13 @@ abstract class ExecutableTest<parametersType> {
         return {
             id: this.id,
             testType: this.testType,
-            parameters: this.parameters,
-            logMessages: this.logMessages
+            params: this.parameters,
+            logMessages: this.logMessages,
+            wikiLink: this.wikiLink
         }
     }
 
-    protected log(status: 'info' | 'failed' | 'successful' | 'error', message: string) {
+    protected log(status: 'running' | 'failed' | 'successful' | 'error', message: string) {
         const now: Date = new Date();
         this.loggers.forEach((logger: Logger) => {
             logger.log({id: this.nextLogMessageId, time: now, status, message});
@@ -41,9 +44,8 @@ abstract class ExecutableTest<parametersType> {
     }
 
     public execute(callback: (err: Error | null) => void) {
-        // TODO add state for test and set it to running
-        this.log('info', 'Starting ' + this.testType + ' with following parameters:');
-        this.log('info',  JSON.stringify(this.parameters));
+        this.log('running', 'Starting ' + this.testType + ' with following parameters:');
+        this.log('running',  JSON.stringify(this.parameters));
         this.executeTestScript((err: Error | null, isFinishedSuccessfuly?: boolean, failureReason?: string) => {
             if(err) {
                 this.log('error', err.message);
